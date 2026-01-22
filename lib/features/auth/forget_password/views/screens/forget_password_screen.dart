@@ -1,4 +1,3 @@
-import 'package:disan/features/auth/sign_in/views/widgets/gradiant_container.dart';
 import 'package:flutter/material.dart';
 import 'package:disan/features/auth/forget_password/views/widgets/forget_password_screen_body.dart';
 
@@ -8,9 +7,7 @@ class ForgetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GradiantContainer(
-        child: ForgetPasswordScreenBody(),
-      ),
+      body: ForgetPasswordScreenBody(),
     );
   }
 }

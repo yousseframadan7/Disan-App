@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:disan/core/utilies/sizes/sized_config.dart';
 import 'package:flutter/material.dart';
 

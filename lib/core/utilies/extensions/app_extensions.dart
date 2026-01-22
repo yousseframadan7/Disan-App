@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 extension AppExtensions on BuildContext {
   //features/auth/cubit
-  // SignUpCubit get signUpCubit => read<SignUpCubit>();
+  // CustomerSignUpCubit get CustomerSignUpCubit => read<CustomerSignUpCubit>();
   // SignInCubit get signInCubit => read<SignInCubit>();
   double get screenWidth => MediaQuery.of(navigatorKey.currentContext!).size.width;
   double get screenHeight => MediaQuery.of(navigatorKey.currentContext!).size.height;

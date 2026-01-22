@@ -27,14 +27,14 @@ class CustomOnBoardingStep extends StatelessWidget {
             style: AppTextStyles.title36PrimaryColorW500,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: SizeConfig.height * 0.03),
+          SizedBox(height: SizeConfig.height * 0.02),
           Text(
             description,
             style: AppTextStyles.title20WhiteW500,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: SizeConfig.height * 0.01),
-          Lottie.asset(image, height: SizeConfig.height * 0.4),
+          Expanded(child: Lottie.asset(image)),
         ],
       ),
     );

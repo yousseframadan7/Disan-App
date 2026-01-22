@@ -2,6 +2,7 @@ import 'package:disan/core/app_route/route_names.dart';
 import 'package:disan/core/components/custom_text_button.dart';
 import 'package:disan/core/utilies/colors/app_colors.dart';
 import 'package:disan/core/utilies/extensions/app_extensions.dart';
+import 'package:disan/core/utilies/sizes/sized_config.dart';
 import 'package:disan/core/utilies/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -21,17 +22,22 @@ class CustomOnBoardingAppBar extends StatelessWidget {
           ),
           color: AppColors.kPrimaryColor,
           margin: EdgeInsets.zero,
-          child: CustomTextButton(
-            title: "Skip",
-            onPressed: () {
-              context.pushScreen(RouteNames.signInScreen);
-            },
-            alignment: Alignment.center,
-            style: AppTextStyles.title18WhiteW500,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.width * 0.04,
+              vertical: SizeConfig.height * 0.008,
+            ),
+            child: CustomTextButton(
+              title: "Skip",
+              onPressed: () {
+                context.pushScreen(RouteNames.selectRoleScreen);
+              },
+              alignment: Alignment.center,
+              style: AppTextStyles.title18WhiteW500,
+            ),
           ),
         ),
       ],
     );
   }
 }
-

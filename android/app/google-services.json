@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "823148130413",
+    "project_id": "disan-store",
+    "storage_bucket": "disan-store.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823148130413:android:3a0b0d93635ccdb61a0f64",
+        "android_client_info": {
+          "package_name": "com.example.disanStory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV_Cv7zHz3ibhPN3zXeG9CSup1m_yOf4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

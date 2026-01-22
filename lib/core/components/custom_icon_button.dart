@@ -4,28 +4,47 @@ import 'package:flutter/material.dart';
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
     super.key,
-    required this.icon,
+     this.icon,
     this.onPressed,
     this.iconColor,
     this.iconSize,
-    this.weight, this.backgroundColor,
+    this.weight,
+    this.child,
+    this.backgroundColor, this.hPadding, this.vPadding,
   });
-  final IconData icon;
+
+  final IconData? icon;
   final Function()? onPressed;
   final Color? iconColor;
+  final Widget? child;
   final double? iconSize;
   final double? weight;
   final Color? backgroundColor;
+  final double? hPadding;
+  final double? vPadding;
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Icon(icon, weight: weight),
-      color: iconColor ?? Colors.white,
-      style: ButtonStyle(
-        backgroundColor:backgroundColor==null?null: MaterialStatePropertyAll(backgroundColor!),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor ?? Colors.transparent,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal:hPadding ?? context.screenWidth * 0.02,
+                vertical:vPadding ?? context.screenWidth * 0.02),
+            child:child?? Icon(
+              icon,
+              size: iconSize ?? context.screenWidth * 0.06,
+              color: iconColor ?? Colors.white,
+              weight: weight,
+            ),
+          ),
+        ),
       ),
-      iconSize: iconSize ?? context.screenWidth * 0.07,
     );
   }
 }

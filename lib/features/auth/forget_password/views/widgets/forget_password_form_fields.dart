@@ -28,7 +28,7 @@ class ForgetPasswordFormFields extends StatelessWidget {
           title: "Password",
           isPassword: true,
         ),
-        SizedBox(height: SizeConfig.height * 0.015),
+        SizedBox(height: SizeConfig.height * 0.01),
         CustomTextFormFieldWithTitle(
           hintText: "enter confirm password",
           title: "Confirm Password",

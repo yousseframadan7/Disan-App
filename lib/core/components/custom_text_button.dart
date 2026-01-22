@@ -7,25 +7,34 @@ class CustomTextButton extends StatelessWidget {
     super.key,
     this.onPressed,
     required this.title,
-    this.style, this.alignment,  this.backgroundColor,
+    this.style,
+    this.alignment,
+    this.backgroundColor,
   });
+
   final Function()? onPressed;
   final String title;
   final TextStyle? style;
   final AlignmentGeometry? alignment;
-  final Color ?backgroundColor;
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        alignment:alignment?? Alignment.topCenter,
-        backgroundColor: backgroundColor,
-        padding: EdgeInsets.symmetric(horizontal: context.screenWidth * 0.00, vertical: 0),
-      ),
-      onPressed: onPressed,
-      child: Text(
-        title,
-        style: style ?? AppTextStyles.title18PrimaryColorW500,
+    return Align(
+      alignment: alignment ?? Alignment.topCenter,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          color: backgroundColor ?? Colors.transparent,
+          padding: EdgeInsets.symmetric(
+            horizontal: context.screenWidth * 0.00,
+            vertical: 0,
+          ),
+          child: Text(
+            title,
+            style: style ?? AppTextStyles.title16PrimaryColorW500,
+          ),
+        ),
       ),
     );
   }

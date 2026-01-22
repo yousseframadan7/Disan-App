@@ -1,3 +1,7 @@
+import 'package:disan/core/utilies/colors/app_colors.dart';
+import 'package:disan/core/utilies/styles/app_text_styles.dart';
+import 'package:disan/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:disan/core/app_route/route_names.dart';
 import 'package:disan/core/components/custom_text_button.dart';
@@ -28,11 +32,15 @@ class _RememberMeAndForgetPasswordState
                   rememberMe = value ?? false;
                 });
               },
+              activeColor: AppColors.kPrimaryColor,
             ),
-            Text("Remember Me"),
+            Text(
+             LocaleKeys.remember_me.tr(), // "Remember Me",
+              style: AppTextStyles.title16Black,
+            ),
             const Spacer(),
             CustomTextButton(
-              title: "Forget Password?",
+              title:LocaleKeys.forget_password.tr(), // "Forget Password?",
               onPressed: () {
                 context.pushScreen(RouteNames.forgetPasswordScreen);
               },
