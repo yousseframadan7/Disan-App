@@ -69,7 +69,8 @@ class ReelCubit extends Cubit<ReelStatus> {
     if (index < 0 || index >= reels.length) return;
 
     currentIndex = index;
-    comments = []; // Clear comments list to avoid showing comments from previous reel
+    comments =
+        []; // Clear comments list to avoid showing comments from previous reel
     emit(ReelStatus.loading);
 
     try {
@@ -150,12 +151,20 @@ class ReelCubit extends Cubit<ReelStatus> {
           .eq('target_id', reelId)
           .count());
 
-      reels[currentIndex] = reels[currentIndex].copyWith(
-        likesNum: likeCountResponse.count,
-        likedByMe: isLikedNow,
-      );
+      // ابحث عن الـ index الصحيح بناءً على reelId بدلاً من currentIndex
+      // عشان لو اليوزر غير الريل، يتحدث الريل الصحيح
+      final index = reels.indexWhere((r) => r.id == reelId);
+      if (index != -1) {
+        reels[index] = reels[index].copyWith(
+          likesNum: likeCountResponse.count,
+          likedByMe: isLikedNow,
+        );
+        log('Like updated for reel $reelId: ${reels[index].likesNum}, likedByMe: ${reels[index].likedByMe}');
+      } else {
+        log('Reel with ID $reelId not found in the list');
+      }
+
       emit(ReelStatus.likeUpdated);
-      log('Like updated for reel $reelId: ${reels[currentIndex].likesNum}, likedByMe: ${reels[currentIndex].likedByMe}');
     } catch (e) {
       log('Error toggling like for reel $reelId: $e');
       emit(ReelStatus.error);
@@ -163,7 +172,8 @@ class ReelCubit extends Cubit<ReelStatus> {
   }
 
   /// Add a comment to a reel
-  Future<void> addComment({required String reelId, required String comment}) async {
+  Future<void> addComment(
+      {required String reelId, required String comment}) async {
     try {
       await _fetchWithRetry(() async => await supabase.from('comments').insert({
             'target_id': reelId,
@@ -173,12 +183,13 @@ class ReelCubit extends Cubit<ReelStatus> {
           }));
 
       // Fetch the latest comment count
-      final commentCountResponse = await _fetchWithRetry(() async => await supabase
-          .from('comments')
-          .select('id')
-          .eq('target_type', 'reel')
-          .eq('target_id', reelId)
-          .count());
+      final commentCountResponse = await _fetchWithRetry(() async =>
+          await supabase
+              .from('comments')
+              .select('id')
+              .eq('target_type', 'reel')
+              .eq('target_id', reelId)
+              .count());
 
       reels[currentIndex] = reels[currentIndex].copyWith(
         commentsCount: commentCountResponse.count,
@@ -215,7 +226,8 @@ class ReelCubit extends Cubit<ReelStatus> {
                       .select()
                       .eq('id', comment.userId)
                       .single();
-                  return comment.copyWith(user: UserModel.fromJson(userResponse));
+                  return comment.copyWith(
+                      user: UserModel.fromJson(userResponse));
                 } catch (e) {
                   log('Error fetching user for comment on reel $reelId: $e');
                   return comment;
@@ -247,7 +259,8 @@ class ReelCubit extends Cubit<ReelStatus> {
         .listen((List<Map<String, dynamic>> data) async {
           try {
             final likesCount = data.length;
-            final likedByMe = data.any((like) => like['user_id'] == supabase.auth.currentUser!.id);
+            final likedByMe = data.any(
+                (like) => like['user_id'] == supabase.auth.currentUser!.id);
 
             reels[currentIndex] = reels[currentIndex].copyWith(
               likesNum: likesCount,
@@ -263,7 +276,8 @@ class ReelCubit extends Cubit<ReelStatus> {
   }
 
   /// Retry logic for network requests
-  Future<T> _fetchWithRetry<T>(Future<T> Function() operation, {int retries = 3}) async {
+  Future<T> _fetchWithRetry<T>(Future<T> Function() operation,
+      {int retries = 3}) async {
     for (int i = 0; i < retries; i++) {
       try {
         return await operation();

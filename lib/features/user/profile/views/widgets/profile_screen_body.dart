@@ -67,7 +67,7 @@ class ProfileScreenBody extends StatelessWidget {
                   route: RouteNames.contactSupportScreen,
                 ),
                 SizedBox(height: SizeConfig.height * 0.015),
-                getIt<CacheHelper>().getUserModel()!.role == 'user'
+                getIt<CacheHelper>().getUserModel()!.role == 'customer'
                     ? Column(
                         children: [
                           ProfileListTile(

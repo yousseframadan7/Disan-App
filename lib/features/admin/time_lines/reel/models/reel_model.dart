@@ -1,6 +1,6 @@
 import 'package:disan/features/admin/time_lines/story/models/user_model.dart';
 
-class ReelModel {
+class ReelModel { 
   final String id;
   final String videoUrl;
   final UserModel? userModel;
@@ -12,6 +12,7 @@ class ReelModel {
   final bool likedByMe;
   final int commentsCount;
   UserModel? user;
+
   ReelModel({
     this.user,
     required this.id,
@@ -19,9 +20,9 @@ class ReelModel {
     this.userModel,
     this.caption,
     required this.shopId,
-    this.likesNum = 0,
-    this.likedByMe = false,
-    this.commentsCount = 0,
+    this.likesNum = 0, // default موجود أصلاً
+    this.likedByMe = false, // default موجود أصلاً
+    this.commentsCount = 0, // default موجود أصلاً
   });
 
   factory ReelModel.fromJson(Map<String, dynamic> json) {
@@ -75,4 +76,5 @@ class ReelModel {
       user: user ?? this.user,
     );
   }
+
 }

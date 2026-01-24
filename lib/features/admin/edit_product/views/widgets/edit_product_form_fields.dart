@@ -91,20 +91,12 @@ class EditProductFormFields extends StatelessWidget {
                     userRoles: cubit.categories.map((e) => e.name).toList(),
                     onChanged: (value) {
                       cubit.categoryController.text = value.toString();
-                      cubit.filterSubCategories(
-                        value.toString(),
-                      );
                     },
                     hintText: cubit.categoryController.text,
                     fillColor: Colors.grey.shade300,
                   );
           }),
-          SizedBox(height: SizeConfig.height * 0.015),
-          Text(
-            'Sub Category',
-            style: AppTextStyles.title18PrimaryColorW500,
-          ),
-          SizedBox(height: SizeConfig.height * 0.005),
+          SizedBox(height: SizeConfig.height * 0.01),
         ],
       ),
     );

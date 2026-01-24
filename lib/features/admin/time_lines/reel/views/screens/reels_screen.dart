@@ -68,6 +68,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
               itemCount: cubit.reels.length,
               onPageChanged: (index) {
                 cubit.initializeVideo(index: index);
+                setState(() {}); // تحديث UI عند تغيير الصفحة
               },
               itemBuilder: (context, index) {
                 final reel = cubit.reels[index];
@@ -85,109 +86,122 @@ class _ReelsScreenState extends State<ReelsScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                return Stack(
-                  children: [
-                    SizedBox.expand(
-                      child: FittedBox(
-                        fit: BoxFit.cover,
-                        child: SizedBox(
-                          width: cubit.videoController!.value.size.width,
-                          height: cubit.videoController!.value.size.height,
-                          child: VideoPlayer(cubit.videoController!),
+                return BlocBuilder<ReelCubit, ReelStatus>(
+                  bloc: cubit,
+                  builder: (context, reelState) {
+                    // جيب الـ reel المحدث من الـ cubit
+                    final updatedReel = cubit.reels[index];
+                    return Stack(
+                      children: [
+                        SizedBox.expand(
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: SizedBox(
+                              width: cubit.videoController!.value.size.width,
+                              height: cubit.videoController!.value.size.height,
+                              child: VideoPlayer(cubit.videoController!),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: SizeConfig.height * 0.05,
-                      left: SizeConfig.width * 0.05,
-                      right: SizeConfig.width * 0.05,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: SizeConfig.width * 0.05,
-                            backgroundImage: NetworkImage(reel.userModel!.image),
-                            backgroundColor: Colors.grey.shade100,
-                          ),
-                          SizedBox(width: SizeConfig.width * 0.04),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  reel.userModel!.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                        Positioned(
+                          bottom: SizeConfig.height * 0.05,
+                          left: SizeConfig.width * 0.05,
+                          right: SizeConfig.width * 0.05,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                radius: SizeConfig.width * 0.05,
+                                backgroundImage: NetworkImage(updatedReel.userModel!.image),
+                                backgroundColor: Colors.grey.shade100,
+                              ),
+                              SizedBox(width: SizeConfig.width * 0.04),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      updatedReel.userModel!.name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      updatedReel.caption ?? "No caption",
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  reel.caption ?? "No caption",
-                                  style: const TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(width: SizeConfig.width * 0.04),
+                              CustomOutLineButton(
+                                onPressed: () {
+                                  showToast('Coming soon');
+                                },
+                                name: 'Follow',
+                                height: SizeConfig.height * 0.04,
+                                width: SizeConfig.width * 0.2,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          right: SizeConfig.width * 0.05,
+                          bottom: SizeConfig.height * 0.05,
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  updatedReel.likedByMe ? Icons.favorite : Icons.favorite_border,
+                                  color: updatedReel.likedByMe ? Colors.red : Colors.white,
                                 ),
-                              ],
-                            ),
+                                onPressed: () async {
+                                  // استدعاء الـ toggleLike
+                                  await cubit.toggleLike(updatedReel.id);
+                                  // إضافة setState لفرض إعادة بناء الـ UI فوراً
+                                  // ده هيحل مشكلة عدم التحديث رغم تغيير الـ state
+                                  if (mounted) {
+                                    setState(() {});
+                                  }
+                                },
+                              ),
+                              Text(
+                                '${updatedReel.likesNum}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(height: SizeConfig.height * 0.02),
+                              IconButton(
+                                icon: const Icon(Icons.comment, color: Colors.white),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) => CommentBottomSheet(
+                                      reel: updatedReel,
+                                      reelCubit: cubit,
+                                    ),
+                                  );
+                                },
+                              ),
+                              Text(
+                                '${updatedReel.commentsCount}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(height: SizeConfig.height * 0.02),
+                              IconButton(
+                                icon: const Icon(Icons.more_horiz, color: Colors.white),
+                                onPressed: () {
+                                  showToast('Coming soon');
+                                },
+                              ),
+                            ],
                           ),
-                          SizedBox(width: SizeConfig.width * 0.04),
-                          CustomOutLineButton(
-                            onPressed: () {
-                              showToast('Coming soon');
-                            },
-                            name: 'Follow',
-                            height: SizeConfig.height * 0.04,
-                            width: SizeConfig.width * 0.2,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      right: SizeConfig.width * 0.05,
-                      bottom: SizeConfig.height * 0.05,
-                      child: Column(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              reel.likedByMe ? Icons.favorite : Icons.favorite_border,
-                              color: reel.likedByMe ? Colors.red : Colors.white,
-                            ),
-                            onPressed: () {
-                              cubit.toggleLike(reel.id);
-                            },
-                          ),
-                          Text(
-                            '${reel.likesNum}',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(height: SizeConfig.height * 0.02),
-                          IconButton(
-                            icon: const Icon(Icons.comment, color: Colors.white),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) => CommentBottomSheet(
-                                  reel: reel,
-                                  reelCubit: cubit,
-                                ),
-                              );
-                            },
-                          ),
-                          Text(
-                            '${reel.commentsCount}',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(height: SizeConfig.height * 0.02),
-                          IconButton(
-                            icon: const Icon(Icons.more_horiz, color: Colors.white),
-                            onPressed: () {
-                              showToast('Coming soon');
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
             );
@@ -268,7 +282,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.reel.commentsCount} Comments', // Debug: Show reel ID
+                        '${widget.reel.commentsCount} Comments',
                         style: AppTextStyles.title16BlackBold.copyWith(
                           fontSize: SizeConfig.width * 0.04,
                           fontWeight: FontWeight.w600,

@@ -15,7 +15,6 @@ class UpdateProductCubit extends Cubit<UpdateProductState> {
   UpdateProductCubit({required this.product}) : super(UpdateProductInitial()) {
     getCategories();
     initControllers();
-    getSubCategories();
   }
   final ProductModel product;
   final formKey = GlobalKey<FormState>();
@@ -102,45 +101,15 @@ class UpdateProductCubit extends Cubit<UpdateProductState> {
   }
 
   //
-  List<SubCategoryModel> subCategories = [];
-  getSubCategories() async {
-    try {
-      emit(GetSubCategoriesLoading());
-      final response =
-          await getIt<SupabaseClient>().from("sub_categories").select();
-      subCategories = response
-          .map<SubCategoryModel>((e) => SubCategoryModel.fromJson(e))
-          .toList();
-      filtereSubCategories = subCategories
-          .where((element) => element.categoryId == product.categoryId)
-          .toList();
-      emit(GetSubCategoriesSuccess());
-    } on Exception catch (e) {
-      emit(GetSubCategoriesFailure(message: e.toString()));
-    }
-  }
-
-  //
-  List<SubCategoryModel> filtereSubCategories = [];
-  filterSubCategories(String categoryName) {
-    final id =
-        categories.firstWhere((element) => element.name == categoryName).id;
-    filtereSubCategories =
-        subCategories.where((element) => element.categoryId == id).toList();
-    emit(GetSubCategoriesSuccess());
-  }
-
-  //
   pickProductImage() async {
     try {
       emit(PickImageLoading());
       pickImage(source: ImageSource.gallery).then((value) {
         if (value != null) {
           image = value;
-          emit(UpdateProductSuccess());
+          emit(PickImageSuccess());
         }
       });
-      emit(UpdateProductSuccess());
     } on Exception catch (e) {
       emit(PickImageFailure(message: e.toString()));
     }

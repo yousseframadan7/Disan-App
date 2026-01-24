@@ -97,6 +97,10 @@ class OrderItemCard extends StatelessWidget {
                       icon: Icons.attach_money,
                     ),
                     SizedBox(height: SizeConfig.height * 0.01),
+                    Text(
+                        '${LocaleKeys.total.tr()} ${item.product!.price * item.quantity}',
+                        style: AppTextStyles.title16WhiteW600),
+                    SizedBox(height: SizeConfig.height * 0.01),
                     OrderItemInfoRow(
                       title: "From",
                       value: item.product!.shopName.toString(),
@@ -106,14 +110,6 @@ class OrderItemCard extends StatelessWidget {
                     ItemCategory(category: item.product!.category),
                   ],
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                      '${LocaleKeys.total.tr()} ${item.product!.price * item.quantity}',
-                      style: AppTextStyles.title16WhiteW600),
-                ],
               ),
             ],
           ),
