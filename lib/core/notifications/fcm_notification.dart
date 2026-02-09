@@ -18,20 +18,17 @@ class NotificationsHelper {
     importance: Importance.max,
   );
 
-  // initialize firebase and local notifications
   Future<void> initNotifications() async {
-    NotificationSettings settings =
-        await _firebaseMessaging.getNotificationSettings();
-    LocalNotificationsServices.init();
-    if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
-      await _firebaseMessaging.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-    }
+    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
-    // local notifications init
+    print("Authorization status: ${settings.authorizationStatus}");
+
+    await LocalNotificationsServices.init();
+
     const AndroidInitializationSettings androidInit =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -40,15 +37,17 @@ class NotificationsHelper {
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    // create notification channel explicitly
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
-    // get device token
     String? deviceToken = await _firebaseMessaging.getToken();
-    print("Device Token: $deviceToken");
+    print(" Device Token: $deviceToken");
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((token) {
+      print(" Refreshed Token: $token");
+    });
   }
 
   void setupFirebaseMessaging() {

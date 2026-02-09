@@ -92,11 +92,12 @@ class ProfileScreenBody extends StatelessWidget {
                 SizedBox(height: SizeConfig.height * 0.015),
                 CustomElevatedButton(
                   name: LocaleKeys.logout.tr(),
-                  backgroundColor: AppColors.kSecondaryColor.withOpacity(0.4),
+                  backgroundColor: AppColors.kSecondaryColor,
                   onPressed: () async {
                     await getIt<SupabaseClient>().auth.signOut();
                     await getIt<CacheHelper>().removeData(key: "user");
-                    context.pushAndRemoveUntilScreen(RouteNames.selectRoleScreen);
+                    context
+                        .pushAndRemoveUntilScreen(RouteNames.selectRoleScreen);
                   },
                 ),
                 SizedBox(height: SizeConfig.height * 0.09),

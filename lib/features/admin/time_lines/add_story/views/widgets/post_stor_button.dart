@@ -35,7 +35,8 @@ class PostStoryButton extends StatelessWidget {
                     horizontal: SizeConfig.width * 0.05,
                     vertical: SizeConfig.height * 0.01),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(15
+                  ),
                 ),
               ),
             ),

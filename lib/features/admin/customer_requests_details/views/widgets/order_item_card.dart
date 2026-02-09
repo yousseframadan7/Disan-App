@@ -33,7 +33,7 @@ class OrderItemCard extends StatelessWidget {
       child: Card(
         elevation: 8,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           side: BorderSide(
             color: AppColors.kPrimaryColor.withOpacity(0.5),
             width: 1,
@@ -51,7 +51,7 @@ class OrderItemCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
                 color: AppColors.kPrimaryColor.withOpacity(0.3),
@@ -64,7 +64,7 @@ class OrderItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(12),
                 child: Image.network(
                   item.product!.image,
                   width: SizeConfig.width * 0.3,

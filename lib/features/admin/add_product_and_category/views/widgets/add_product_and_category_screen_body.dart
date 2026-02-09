@@ -1,7 +1,6 @@
 import 'package:disan/core/utilies/colors/app_colors.dart';
 import 'package:disan/core/utilies/sizes/sized_config.dart';
 import 'package:disan/core/utilies/styles/app_text_styles.dart';
-import 'package:disan/features/admin/add_product_and_category/views/widgets/add_category_tab_bar_view.dart';
 import 'package:disan/features/admin/add_product_and_category/views/widgets/add_product_tab_bar_view.dart';
 import 'package:disan/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -39,7 +38,6 @@ class AddProductAndCategoryScreenBody extends StatelessWidget {
               Expanded(
                 child: TabBarView(children: [
                   AddProductTabBarView(),
-                  AddCategoryTabBarView(),
                 ]),
               )
             ],

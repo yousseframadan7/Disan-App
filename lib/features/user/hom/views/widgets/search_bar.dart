@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:disan/core/components/show_toast.dart';
 import 'package:disan/core/utilies/styles/app_text_styles.dart';
 import 'package:disan/features/user/hom/view_models/cubit/get_categories_cubit.dart';
@@ -9,110 +10,138 @@ import 'package:disan/core/utilies/sizes/sized_config.dart';
 import 'package:disan/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class HomrScreenSearchBar extends StatelessWidget {
+/// 🔥 SEARCH BAR
+class HomrScreenSearchBar extends StatefulWidget {
   const HomrScreenSearchBar({super.key});
+
+  @override
+  State<HomrScreenSearchBar> createState() => _HomrScreenSearchBarState();
+}
+
+class _HomrScreenSearchBarState extends State<HomrScreenSearchBar> {
+  final TextEditingController controller = TextEditingController();
+  Timer? debounce;
+
+  @override
+  void dispose() {
+    controller.dispose();
+    debounce?.cancel();
+    super.dispose();
+  }
+
+  void onSearchChanged(String value) {
+    if (debounce?.isActive ?? false) debounce!.cancel();
+
+    debounce = Timer(const Duration(milliseconds: 400), () {
+      context.read<GetProductsCubit>().searchProducts(value);
+    });
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.03),
+      height: 55,
+      margin: EdgeInsets.symmetric(horizontal: SizeConfig.width * .03),
       decoration: BoxDecoration(
-        color: AppColors.kPrimaryColor.withOpacity(0.6),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: Offset(0, 2),
+            color: Colors.black.withOpacity(.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: TextField(
+        controller: controller,
+        onChanged: onSearchChanged,
+        style: const TextStyle(fontSize: 15),
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width * 0.02,
-            vertical: SizeConfig.height * 0.015,
-          ),
           hintText: LocaleKeys.search_any_product.tr(),
-          hintStyle: AppTextStyles.title16White400,
+          hintStyle: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 14,
+          ),
           border: InputBorder.none,
-          prefixIcon: Icon(Icons.search, color: Colors.white),
-          suffixIcon: Padding(
-            padding: EdgeInsets.only(
-              top: SizeConfig.height * 0.005,
-              bottom: SizeConfig.height * 0.005,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: GestureDetector(
-                child: Icon(
-                  Icons.filter_alt_rounded,
-                  color: AppColors.kPrimaryColor.withOpacity(0.5),
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+
+          /// search icon
+          prefixIcon: Icon(
+            Icons.search,
+            color: AppColors.kPrimaryColor,
+          ),
+
+          /// clear + filter
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (controller.text.isNotEmpty)
+                GestureDetector(
+                  onTap: () {
+                    controller.clear();
+                    context.read<GetProductsCubit>().searchProducts('');
+                    setState(() {});
+                  },
+                  child: Icon(Icons.close, color: Colors.grey.shade500),
                 ),
-                onTap: () => showToast("Coming soon"),
-                //_showFilterBottomSheet(context)
+              const SizedBox(width: 6),
+              GestureDetector(
+                onTap: () => showToast('Coming soon'),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.kPrimaryColor.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.tune_rounded,
+                    color: AppColors.kPrimaryColor,
+                    size: 20,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
-        onChanged: (value) {
-          context.read<GetProductsCubit>().searchProducts(value);
-        },
       ),
     );
   }
 
+  /// 🔥 OPEN FILTER
   void _showFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
       backgroundColor: Colors.white,
-      builder: (bottomSheetContext) => MultiBlocProvider(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (_) => MultiBlocProvider(
         providers: [
-          BlocProvider.value(
-            value: context.read<GetCategoriesCubit>(),
-          ),
-          BlocProvider.value(
-            value: context.read<GetProductsCubit>(),
-          ),
+          BlocProvider.value(value: context.read<GetCategoriesCubit>()),
+          BlocProvider.value(value: context.read<GetProductsCubit>()),
         ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider.value(
-              value: context.read<GetCategoriesCubit>(),
-            ),
-            BlocProvider.value(
-              value: context.read<GetProductsCubit>(),
-            ),
-          ],
-          child: FilterBottomSheet(),
-        ),
+        child: const FilterBottomSheet(),
       ),
     );
   }
 }
 
+////////////////////////////////////////////////////////////////
+/// 🔥 FILTER BOTTOM SHEET
+////////////////////////////////////////////////////////////////
+
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _FilterBottomSheetState createState() => _FilterBottomSheetState();
+  State<FilterBottomSheet> createState() => _FilterBottomSheetState();
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
@@ -132,193 +161,160 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     final cubit = context.read<GetProductsCubit>();
     final categories = context.read<GetCategoriesCubit>().categories;
 
-    return  SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width * 0.03,
-            vertical: SizeConfig.height * 0.01,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: SizeConfig.height * 0.02),
-              Text(
-                LocaleKeys.filters.tr(),
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.titleLarge?.color,
-                ),
-              ),
-              SizedBox(height: SizeConfig.height * 0.03),
-              Text(
-                LocaleKeys.price_range.tr(),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                ),
-              ),
-              SizedBox(height: SizeConfig.height * 0.015),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _minPriceController,
-                      decoration: InputDecoration(
-                        labelText: LocaleKeys.min_price.tr(),
-                        prefixIcon:
-                            Icon(Icons.monetization_on_outlined, size: 20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[50],
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                  SizedBox(width: SizeConfig.width * 0.03),
-                  Expanded(
-                    child: TextField(
-                      controller: _maxPriceController,
-                      decoration: InputDecoration(
-                        labelText: LocaleKeys.max_price.tr(),
-                        prefixIcon:
-                            Icon(Icons.monetization_on_outlined, size: 20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[50],
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: SizeConfig.height * 0.03),
-              Text(
-                LocaleKeys.category.tr(),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                ),
-              ),
-              SizedBox(height: SizeConfig.height * 0.015),
-              DropdownButtonFormField<String>(
-                value: _selectedCategory,
-                hint: Text(
-                  LocaleKeys.select_category.tr(),
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-                items: categories
-                    .map((category) => DropdownMenuItem(
-                          value: category.name,
-                          child: Text(category.name),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[50],
-                ),
-              ),
-              SizedBox(height: SizeConfig.height * 0.04),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        cubit.resetFilters();
-                        _minPriceController.clear();
-                        _maxPriceController.clear();
-                        setState(() {
-                          _selectedCategory = null;
-                        });
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[300],
-                        foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: SizeConfig.height * 0.02),
-                        elevation: 2,
-                      ),
-                      child: Text(
-                        LocaleKeys.reset.tr(),
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: SizeConfig.width * 0.03),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        double? minPrice = _minPriceController.text.isEmpty
-                            ? null
-                            : double.tryParse(_minPriceController.text);
-                        double? maxPrice = _maxPriceController.text.isEmpty
-                            ? null
-                            : double.tryParse(_maxPriceController.text);
-                        if (minPrice != null &&
-                            maxPrice != null &&
-                            minPrice > maxPrice) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  Text(LocaleKeys.invalid_price_range.tr()),
-                              backgroundColor: Colors.redAccent,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          );
-                          return;
-                        }
-                        cubit.filterByPrice(min: minPrice, max: maxPrice);
-                        cubit.filterByCategory(_selectedCategory);
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.kPrimaryColor,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: SizeConfig.height * 0.02),
-                        elevation: 2,
-                      ),
-                      child: Text(
-                        LocaleKeys.apply.tr(),
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: SizeConfig.height * 0.03),
-              SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-            ],
-          ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.width * 0.04,
+          vertical: SizeConfig.height * 0.02,
         ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: SizeConfig.height * .01),
+
+            /// TITLE
+            Text(
+              LocaleKeys.filters.tr(),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+
+            SizedBox(height: SizeConfig.height * .03),
+
+            /// PRICE TITLE
+            Text(
+              LocaleKeys.price_range.tr(),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+
+            SizedBox(height: SizeConfig.height * .015),
+
+            /// PRICE ROW
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _minPriceController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: LocaleKeys.min_price.tr(),
+                      prefixIcon:
+                          const Icon(Icons.monetization_on_outlined, size: 20),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      filled: true,
+                      fillColor: Colors.grey[50],
+                    ),
+                  ),
+                ),
+                SizedBox(width: SizeConfig.width * .03),
+                Expanded(
+                  child: TextField(
+                    controller: _maxPriceController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: LocaleKeys.max_price.tr(),
+                      prefixIcon:
+                          const Icon(Icons.monetization_on_outlined, size: 20),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      filled: true,
+                      fillColor: Colors.grey[50],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: SizeConfig.height * .03),
+
+            /// CATEGORY
+            Text(
+              LocaleKeys.category.tr(),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+
+            SizedBox(height: SizeConfig.height * .015),
+
+            DropdownButtonFormField<String>(
+              value: _selectedCategory,
+              hint: Text(LocaleKeys.select_category.tr()),
+              items: categories
+                  .map((c) =>
+                      DropdownMenuItem(value: c.name, child: Text(c.name)))
+                  .toList(),
+              onChanged: (v) => setState(() => _selectedCategory = v),
+              decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                filled: true,
+                fillColor: Colors.grey[50],
+              ),
+            ),
+
+            SizedBox(height: SizeConfig.height * .04),
+
+            /// BUTTONS
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      cubit.resetFilters();
+                      _minPriceController.clear();
+                      _maxPriceController.clear();
+                      setState(() => _selectedCategory = null);
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                      foregroundColor: Colors.black,
+                      padding: EdgeInsets.symmetric(
+                          vertical: SizeConfig.height * .018),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: Text(LocaleKeys.reset.tr()),
+                  ),
+                ),
+                SizedBox(width: SizeConfig.width * .03),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      double? min = _minPriceController.text.isEmpty
+                          ? null
+                          : double.tryParse(_minPriceController.text);
+                      double? max = _maxPriceController.text.isEmpty
+                          ? null
+                          : double.tryParse(_maxPriceController.text);
+
+                      if (min != null && max != null && min > max) {
+                        showToast(LocaleKeys.invalid_price_range.tr());
+                        return;
+                      }
+
+                      cubit.filterByPrice(min: min, max: max);
+                      cubit.filterByCategory(_selectedCategory);
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.kPrimaryColor,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                          vertical: SizeConfig.height * .018),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: Text(LocaleKeys.apply.tr()),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: MediaQuery.of(context).viewInsets.bottom + 20),
+          ],
+        ),
+      ),
     );
   }
 }

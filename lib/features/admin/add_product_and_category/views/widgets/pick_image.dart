@@ -60,16 +60,18 @@ class _PickImageState extends State<PickImage> with TickerProviderStateMixin {
               width: double.infinity,
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.kPrimaryColor),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
                 child: widget.imageFile == null
                     ? Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(LocaleKeys.pick_an_image.tr(), //  "Pick an image",
+                            Text(
+                                LocaleKeys.pick_an_image
+                                    .tr(), //  "Pick an image",
                                 style: AppTextStyles.title16PrimaryColorW500),
                             SizedBox(width: SizeConfig.width * 0.02),
                             Icon(

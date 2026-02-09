@@ -36,7 +36,8 @@ class AdminHomeScreenHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(LocaleKeys.hello.tr(), style: AppTextStyles.title18BlackBold),
+              Text(LocaleKeys.hello.tr(),
+                  style: AppTextStyles.title18BlackBold),
               Text(
                 getIt<CacheHelper>().getUserModel()!.name,
                 style: AppTextStyles.title14Black,
@@ -48,7 +49,7 @@ class AdminHomeScreenHeader extends StatelessWidget {
             iconSize: SizeConfig.width * 0.06,
             hPadding: SizeConfig.width * 0.03,
             vPadding: SizeConfig.height * 0.03,
-            backgroundColor: AppColors.kPrimaryColor.withOpacity(0.5),
+            backgroundColor: AppColors.kPrimaryColor,
             child: Badge(
               backgroundColor: Colors.red,
               padding: EdgeInsets.all(SizeConfig.width * 0.00),
@@ -58,7 +59,7 @@ class AdminHomeScreenHeader extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            onPressed: (){
+            onPressed: () {
               showToast('Coming soon');
             },
           ),

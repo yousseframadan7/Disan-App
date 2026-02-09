@@ -26,7 +26,7 @@ class CustomerDetailsScreenBody extends StatelessWidget {
               vertical: SizeConfig.height * 0.01,
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 userModel.image,
                 height: SizeConfig.height * 0.5,

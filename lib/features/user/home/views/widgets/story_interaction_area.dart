@@ -65,7 +65,7 @@ class StoryInteractionArea extends StatelessWidget {
                         horizontal: SizeConfig.width * 0.03),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.white30),
                     ),
                     child: TextField(

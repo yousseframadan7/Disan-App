@@ -21,7 +21,7 @@ class ShopInfo extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: AppColors.kPrimaryColor.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [

@@ -23,7 +23,7 @@ class PickOfferImage extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.kPrimaryColor, width: 1.5),
         boxShadow: [
           BoxShadow(
@@ -35,21 +35,23 @@ class PickOfferImage extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: onTap,
-        child:image != null ? Image.file(image!, fit: BoxFit.cover) : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.add_a_photo_outlined,
-              size: SizeConfig.height * 0.04,
-              color: AppColors.kPrimaryColor,
-            ),
-            SizedBox(height: SizeConfig.height * 0.02),
-            Text(
-              LocaleKeys.upload_offer_image.tr(),
-              style: AppTextStyles.title18BlackW600,
-            ),
-          ],
-        ),
+        child: image != null
+            ? Image.file(image!, fit: BoxFit.cover)
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_a_photo_outlined,
+                    size: SizeConfig.height * 0.04,
+                    color: AppColors.kPrimaryColor,
+                  ),
+                  SizedBox(height: SizeConfig.height * 0.02),
+                  Text(
+                    LocaleKeys.upload_offer_image.tr(),
+                    style: AppTextStyles.title18BlackW600,
+                  ),
+                ],
+              ),
       ),
     );
   }

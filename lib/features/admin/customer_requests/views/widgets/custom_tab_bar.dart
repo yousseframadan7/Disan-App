@@ -18,7 +18,7 @@ class CustomTabBar extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.white, width: 0.5),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         color: AppColors.kPrimaryColor.withOpacity(0.8),
       ),
       child: TabBar(
@@ -30,7 +30,7 @@ class CustomTabBar extends StatelessWidget {
         tabAlignment: TabAlignment.center,
         indicator: BoxDecoration(
           border: Border.all(color: Colors.white, width: 0.5),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           color: AppColors.kPrimaryColor,
         ),
         tabs: tabs.map((e) => Tab(text: e)).toList(),

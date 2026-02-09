@@ -16,7 +16,7 @@ class CustomTextButtonWithIconWithBackground extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.pink,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(13),
         ),
       ),
     );

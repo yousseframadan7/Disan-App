@@ -18,14 +18,14 @@ class HomeScreenTabBar extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.03),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(36),
-        border: Border.all(color: AppColors.kPrimaryColor,width: 2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.kPrimaryColor, width: 2),
       ),
       child: TabBar(
         dividerHeight: 0,
         indicator: BoxDecoration(
           color: AppColors.kPrimaryColor,
-          borderRadius: BorderRadius.circular(36),
+          borderRadius: BorderRadius.circular(12),
         ),
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.02),
         indicatorSize: TabBarIndicatorSize.tab,
@@ -33,7 +33,7 @@ class HomeScreenTabBar extends StatelessWidget {
         unselectedLabelStyle: AppTextStyles.title16Black,
         tabs: [
           Tab(
-            text:LocaleKeys.Shops.tr(), // 'Shops',
+            text: LocaleKeys.Shops.tr(), // 'Shops',
           ),
           Tab(
             text: LocaleKeys.Timeline.tr(), // 'Categories',

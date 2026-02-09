@@ -18,7 +18,7 @@ class CustomOnBoardingAppBar extends StatelessWidget {
       children: [
         Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(10),
           ),
           color: AppColors.kPrimaryColor,
           margin: EdgeInsets.zero,

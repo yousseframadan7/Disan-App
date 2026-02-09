@@ -21,15 +21,15 @@ class AddCategoryTabBarView extends StatelessWidget {
             context.popScreen();
             quickAlert(
               type: QuickAlertType.success,
-              text:LocaleKeys.category_added_successfully.tr(),
-              title:LocaleKeys.success.tr(), // "Success",
+              text: LocaleKeys.category_added_successfully.tr(),
+              title: LocaleKeys.success.tr(), // "Success",
             );
           }
           if (state is AddCategoryFailure) {
             quickAlert(
               type: QuickAlertType.error,
               text: state.message,
-              title:LocaleKeys.error.tr(), // "Error",
+              title: LocaleKeys.error.tr(), // "Error",
             );
           }
         },

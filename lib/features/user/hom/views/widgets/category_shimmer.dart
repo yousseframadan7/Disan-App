@@ -20,7 +20,7 @@ class CategoryShimmer extends StatelessWidget {
               highlightColor: Colors.grey[100]!,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(12),
                   color: Colors.white,
                 ),
                 width: SizeConfig.width * 0.5,

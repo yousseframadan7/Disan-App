@@ -257,6 +257,12 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
 
+  static TextStyle title16Blue500 = TextStyle(
+    color: AppColors.kPrimaryColor,
+    fontSize: getResponsiveFontSize(fontSize: 16),
+    fontWeight: FontWeight.w500,
+  );
+
   static TextStyle title16WhiteBold = TextStyle(
     color: Colors.white,
     fontSize: getResponsiveFontSize(fontSize: 16),

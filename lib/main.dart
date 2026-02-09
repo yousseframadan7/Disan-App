@@ -29,14 +29,15 @@ Future<void> clearOldCacheIfNeeded() async {
     debugPrint("✅ Old cache cleared due to app update.");
   }
 }
+
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -50,6 +51,7 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await getIt<NotificationsHelper>().initNotifications();
   getIt<NotificationsHelper>().setupFirebaseMessaging();
+
   DateHelper.initialize();
   runApp(
     EasyLocalization(

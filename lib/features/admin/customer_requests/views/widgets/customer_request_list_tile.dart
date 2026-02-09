@@ -94,7 +94,7 @@ class CustomerRequestListTile extends StatelessWidget {
             );
           },
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
               side: BorderSide(color: AppColors.kPrimaryColor, width: 1.5)),
           leading: CircleAvatar(
               radius: SizeConfig.width * 0.1,

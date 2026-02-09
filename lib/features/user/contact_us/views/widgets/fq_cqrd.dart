@@ -57,7 +57,7 @@ class _FAQCardState extends State<FAQCard> with SingleTickerProviderStateMixin {
             child: Card(
               elevation: _elevationAnimation.value,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
                 side: BorderSide(
                   color: AppColors.kPrimaryColor.withOpacity(0.1),
                   width: 1,
@@ -65,7 +65,7 @@ class _FAQCardState extends State<FAQCard> with SingleTickerProviderStateMixin {
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(12),
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -77,7 +77,7 @@ class _FAQCardState extends State<FAQCard> with SingleTickerProviderStateMixin {
                 ),
                 child: ExpansionTile(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   title: Text(
                     widget.question,

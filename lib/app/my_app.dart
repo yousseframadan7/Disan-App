@@ -14,10 +14,23 @@ import 'package:easy_localization/easy_localization.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isTest;
+
+  const MyApp({super.key, this.isTest = false});
 
   @override
   Widget build(BuildContext context) {
+    if (isTest) {
+      return const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Center(
+            child: Text('Test Mode'),
+          ),
+        ),
+      );
+    }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => TranslationCubit()),

@@ -2,31 +2,33 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNotificationsServices {
-  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
   static final StreamController<NotificationResponse> streamController =
       StreamController<NotificationResponse>.broadcast();
-  static onTap(NotificationResponse notificationResponse) {
-    streamController.add(notificationResponse);
+
+  static const String channelId = 'high_importance_channel';
+  static const String channelName = 'High Importance Notifications';
+
+  static void onTap(NotificationResponse response) {
+    streamController.add(response);
   }
 
   static Future<void> init() async {
-    InitializationSettings initializationSettings = InitializationSettings(
-      android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+    const InitializationSettings settings = InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       iOS: DarwinInitializationSettings(),
     );
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveBackgroundNotificationResponse: onTap,
-      onDidReceiveNotificationResponse: onTap,
-    );
-  }
 
-  static Future<void> requestNotificationPermission() async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    final bool? isGranted = await flutterLocalNotificationsPlugin
+    await _plugin.initialize(
+      settings,
+      onDidReceiveNotificationResponse: onTap,
+      onDidReceiveBackgroundNotificationResponse: onTap,
+    );
+
+    // Android 13+ permission
+    await _plugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
@@ -36,34 +38,27 @@ class LocalNotificationsServices {
     required int id,
     required String title,
     required String body,
+    String? payload,
   }) async {
-    final bool? isGranted = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
-    if (isGranted == true) {
-    } else {
-      requestNotificationPermission();
-    }
-
-    NotificationDetails notificationDetails = NotificationDetails(
+    const NotificationDetails details = NotificationDetails(
       android: AndroidNotificationDetails(
-        "channel_id",
-        "channel_name",
-        importance: Importance.high,
+        channelId,
+        channelName,
+        importance: Importance.max,
         priority: Priority.high,
         channelShowBadge: true,
-        enableLights: true,
         enableVibration: true,
+        enableLights: true,
         visibility: NotificationVisibility.public,
       ),
     );
-    await flutterLocalNotificationsPlugin.show(
+
+    await _plugin.show(
       id,
       title,
       body,
-      notificationDetails,
-      payload: 'Default_Sound',
+      details,
+      payload: payload,
     );
   }
 }

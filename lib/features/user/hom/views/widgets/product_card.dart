@@ -29,153 +29,145 @@ class ProductCard extends StatelessWidget {
         context.pushScreen(RouteNames.productDetailsScreen,
             arguments: product.toJson());
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: SizeConfig.width * 0.02,
-          vertical: SizeConfig.height * 0.008,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-              spreadRadius: 2,
-            ),
-          ],
-          border: Border.all(color: AppColors.kPrimaryColor, width: 1),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: NetworkImage(product.image),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.black.withOpacity(0.3),
-                              Colors.transparent,
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: PhysicalModel(
+          color: Colors.white,
+          elevation: 6,
+          borderRadius: BorderRadius.circular(10),
+          shadowColor: Colors.black,
+          child: Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(product.image),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    BlocBuilder<WishListCubit, WishListState>(
-                      buildWhen: (previous, current) => current is ToggleFavorite,
-                      builder: (context, state) {
-                        return Positioned(
-                          top: SizeConfig.height * 0.005,
-                          right: SizeConfig.width * 0.015,
-                          child: GestureDetector(
-                            onTap: onTapToggleFavorite,
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.width * 0.01,
-                                vertical: SizeConfig.height * 0.01,
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white.withOpacity(0.9),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
-                                  ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.black.withOpacity(0.3),
+                                  Colors.transparent,
                                 ],
-                              ),
-                              child: Icon(
-                                Icons.favorite,
-                                color: isFavorite
-                                    ? AppColors.kSecondaryColor
-                                    : Colors.grey,
-                                size: SizeConfig.width * 0.05,
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                    // Price Tag
-                    Positioned(
-                      bottom: SizeConfig.height * 0.005,
-                      right: SizeConfig.width * 0.005,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.width * 0.015,
-                          vertical: SizeConfig.height * 0.005,
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.kPrimaryColor,
-                          borderRadius: BorderRadius.circular(12),
+                        BlocBuilder<WishListCubit, WishListState>(
+                          buildWhen: (previous, current) =>
+                              current is ToggleFavorite,
+                          builder: (context, state) {
+                            return Positioned(
+                              top: SizeConfig.height * 0.005,
+                              right: SizeConfig.width * 0.015,
+                              child: GestureDetector(
+                                onTap: onTapToggleFavorite,
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: SizeConfig.width * 0.01,
+                                    vertical: SizeConfig.height * 0.01,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white.withOpacity(0.9),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.favorite,
+                                    color: isFavorite
+                                        ? AppColors.kSecondaryColor
+                                        : Colors.grey,
+                                    size: SizeConfig.width * 0.05,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        child: Text(
-                            "${product.price.toStringAsFixed(2)} ${LocaleKeys.le.tr()}",
-                            style: AppTextStyles.title12WhiteW500),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.width * 0.02,
-                  vertical: SizeConfig.height * 0.01,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TranslateText(
-                      text: product.name,
-                      style: AppTextStyles.title18BlackBold,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.width * 0.02,
+                      vertical: SizeConfig.height * 0.01,
                     ),
-                    TranslateText(
-                      text: product.description,
-                      style: AppTextStyles.title12BlackColorW400,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.star_outline_rounded,
-                          color: Colors.amber.shade700,
-                          size: SizeConfig.width * 0.05,
+                        TranslateText(
+                          text: product.name,
+                          style: AppTextStyles.title18BlackBold,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(width: SizeConfig.width * 0.01),
-                        Text(
-                          '(4.5)',
-                          style: AppTextStyles.title14BlackColorW400,
+                        TranslateText(
+                          text: product.description,
+                          style: AppTextStyles.title12BlackColorW400,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        const Spacer(),
-                        Text(
-                          "(2.2)",
-                          style: AppTextStyles.title14BlackBold,
+                        SizedBox(height: SizeConfig.height * 0.01),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.width * 0.015,
+                                vertical: SizeConfig.height * 0.005,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: Text(
+                                  "${product.price.toStringAsFixed(2)} ${LocaleKeys.le.tr()}",
+                                  style: AppTextStyles.title12WhiteW500),
+                            ),
+                            const Spacer(),
+
+                            Icon(
+                              Icons.star_outline_rounded,
+                              color: Colors.amber.shade700,
+                              size: SizeConfig.width * 0.05,
+                            ),
+                            // SizedBox(width: SizeConfig.width * 0.01),
+                            Text(
+                              '(4.5)',
+                              style: AppTextStyles.title14BlackColorW400,
+                            ),
+                            // const Spacer(),
+                            // Text(
+                            //   "(2.2)",
+                            //   style: AppTextStyles.title14BlackBold,
+                            // )
+                          ],
                         )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -22,12 +22,12 @@ class ProfileDetailsFields extends StatelessWidget {
           children: [
             state is PickImageLoading
                 ? SizedBox(
-                  height: SizeConfig.height * 0.2,
-                  child: Center(
+                    height: SizeConfig.height * 0.2,
+                    child: Center(
                       child: CircularProgressIndicator(
                           color: AppColors.kPrimaryColor),
                     ),
-                )
+                  )
                 : PickImage(
                     onTap: () {
                       cubit.pickProfileImage();
@@ -43,17 +43,20 @@ class ProfileDetailsFields extends StatelessWidget {
             ),
             SizedBox(height: SizeConfig.height * 0.05),
             CustomTextFormField(
-              lable: LocaleKeys.your_name.tr(),
+              hintText: LocaleKeys.your_name.tr(),
+              label: LocaleKeys.your_name.tr(),
               controller: cubit.nameController,
             ),
             SizedBox(height: SizeConfig.height * 0.015),
             CustomTextFormField(
-              lable: LocaleKeys.your_email.tr(),
+              hintText: LocaleKeys.your_email.tr(),
+              label: LocaleKeys.your_email.tr(),
               controller: cubit.emailController,
             ),
             SizedBox(height: SizeConfig.height * 0.015),
             CustomTextFormField(
-              lable: LocaleKeys.your_phone_number.tr(),
+              hintText: LocaleKeys.your_phone_number.tr(),
+              label: LocaleKeys.your_phone_number.tr(),
               controller: cubit.phoneController,
             ),
             SizedBox(height: SizeConfig.height * 0.05),

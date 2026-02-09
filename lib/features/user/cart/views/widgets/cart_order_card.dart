@@ -26,7 +26,7 @@ class CartOrderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.kPrimaryColor.withOpacity(0.4),
         border: Border.all(color: AppColors.kPrimaryColor, width: 1.5),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -38,7 +38,7 @@ class CartOrderCard extends StatelessWidget {
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
               child: SizedBox(
                 width: SizeConfig.width * 0.3,
                 height: SizeConfig.height * 0.13,

@@ -19,11 +19,7 @@ class UserBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.kPrimaryColor.withOpacity(0.5),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(36),
-          topRight: Radius.circular(36),
-        ),
+        color: AppColors.kPrimaryColor,
       ),
       child: ResponsiveNavigationBar(
         selectedIndex: currentIndex,
@@ -36,40 +32,28 @@ class UserBottomNavBar extends StatelessWidget {
             text: LocaleKeys.home.tr(),
             icon: Icons.home,
             backgroundGradient: LinearGradient(
-              colors: [
-                AppColors.kPrimaryColor.withOpacity(0.5),
-                AppColors.kPrimaryColor
-              ],
+              colors: [Colors.white.withOpacity(0.15), AppColors.kPrimaryColor],
             ),
           ),
           NavigationBarButton(
             text: LocaleKeys.wishlist.tr(),
             icon: Icons.favorite,
             backgroundGradient: LinearGradient(
-              colors: [
-                AppColors.kPrimaryColor.withOpacity(0.7),
-                AppColors.kPrimaryColor
-              ],
+              colors: [Colors.white.withOpacity(0.15), AppColors.kPrimaryColor],
             ),
           ),
           NavigationBarButton(
             text: LocaleKeys.Notifications.tr(),
             icon: Icons.notifications_none,
             backgroundGradient: LinearGradient(
-              colors: [
-                AppColors.kPrimaryColor.withOpacity(0.7),
-                AppColors.kPrimaryColor
-              ],
+              colors: [Colors.white.withOpacity(0.15), AppColors.kPrimaryColor],
             ),
           ),
           NavigationBarButton(
             text: LocaleKeys.profile.tr(),
             icon: Icons.person,
             backgroundGradient: LinearGradient(
-              colors: [
-                AppColors.kPrimaryColor.withOpacity(0.7),
-                AppColors.kPrimaryColor
-              ],
+              colors: [Colors.white.withOpacity(0.15), AppColors.kPrimaryColor],
             ),
           ),
         ],

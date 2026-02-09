@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:disan/core/di/dependancy_injection.dart';
 import 'package:disan/features/admin/time_lines/reel/models/reel_model.dart';
+import 'package:disan/features/admin/time_lines/reel/view_models/cubit/reels_state.dart';
 import 'package:disan/features/admin/time_lines/story/models/user_model.dart';
 import 'package:disan/features/user/home/models/comment_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,9 @@ class ReelCubit extends Cubit<ReelStatus> {
   List<ReelModel> reels;
   int currentIndex;
   VideoPlayerController? videoController;
+  final Map<int, VideoPlayerController> videoControllersCache = {};
+  VideoPlayerController? get currentVideoController =>
+      videoControllersCache[currentIndex];
   final SupabaseClient supabase = getIt<SupabaseClient>();
   StreamSubscription? _commentSubscription;
   StreamSubscription? _likeSubscription;
@@ -33,11 +37,10 @@ class ReelCubit extends Cubit<ReelStatus> {
   ReelCubit({required this.reels, this.currentIndex = 0})
       : super(ReelStatus.initial) {
     if (reels.isNotEmpty) {
-      initializeVideo(index: currentIndex);
+      initalizeVideo(index: currentIndex);
     }
   }
 
-  /// Fetch reels with like and comment counts from Supabase
   Future<void> fetchReels({int limit = 10, int offset = 0}) async {
     try {
       emit(ReelStatus.loading);
@@ -54,7 +57,7 @@ class ReelCubit extends Cubit<ReelStatus> {
           .toList();
       if (reels.isNotEmpty) {
         currentIndex = 0;
-        await initializeVideo(index: currentIndex);
+        initalizeVideo(index: currentIndex);
       } else {
         emit(ReelStatus.error);
       }
@@ -65,47 +68,98 @@ class ReelCubit extends Cubit<ReelStatus> {
   }
 
   /// Initialize video for a specific reel index
-  Future<void> initializeVideo({required int index}) async {
-    if (index < 0 || index >= reels.length) return;
+  // Future<void> initializeVideo({required int index}) async {
+  //   if (index < 0 || index >= reels.length) return;
 
+  //   currentIndex = index;
+  //   comments =
+  //       []; // Clear comments list to avoid showing comments from previous reel
+  //   emit(ReelStatus.loading);
+
+  //   try {
+  //     await videoController?.pause();
+  //     await videoController?.dispose();
+
+  //     videoController = VideoPlayerController.networkUrl(
+  //       Uri.parse(reels[currentIndex].videoUrl),
+  //     );
+
+  //     await videoController!.initialize();
+  //     await videoController!.play();
+
+  //     // Start streaming likes and comments for the current reel
+  //     streamLikes(reels[currentIndex].id);
+  //     streamComments(reels[currentIndex].id);
+
+  //     emit(ReelStatus.playing);
+  //   } catch (e) {
+  //     log('Error initializing video for reel ${reels[currentIndex].id}: $e');
+  //     emit(ReelStatus.error);
+  //   }
+  // }
+
+  void initalizeVideo({required int index}) async {
     currentIndex = index;
-    comments =
-        []; // Clear comments list to avoid showing comments from previous reel
-    emit(ReelStatus.loading);
 
-    try {
-      await videoController?.pause();
-      await videoController?.dispose();
+    // Pause كل الفيديوهات الأخرى
+    videoControllersCache.forEach((i, c) {
+      if (i != index) c.pause();
+    });
 
-      videoController = VideoPlayerController.networkUrl(
-        Uri.parse(reels[currentIndex].videoUrl),
-      );
-
-      await videoController!.initialize();
-      await videoController!.play();
-
-      // Start streaming likes and comments for the current reel
-      streamLikes(reels[currentIndex].id);
-      streamComments(reels[currentIndex].id);
-
+    // شغل الفيديو الحالي فورًا لو جاهز
+    final controller = videoControllersCache[index];
+    if (controller != null) {
+      controller.play();
+      // حضّر الفيديو اللي بعده
+      if (index + 1 < reels.length) preloadVideo(index + 1);
+      if (index - 1 >= 0) preloadVideo(index - 1); // اختياري للفيديو السابق
       emit(ReelStatus.playing);
-    } catch (e) {
-      log('Error initializing video for reel ${reels[currentIndex].id}: $e');
-      emit(ReelStatus.error);
+      return;
+    }
+
+    // لو الفيديو مش جاهز مسبقًا، حضّره فورًا
+    final url = reels[index].videoUrl;
+    final newController = VideoPlayerController.networkUrl(Uri.parse(url));
+    await newController.initialize();
+    newController.setLooping(true);
+    newController.play();
+    videoControllersCache[index] = newController;
+
+    // حضّر الفيديو اللي بعده
+    if (index + 1 < reels.length) preloadVideo(index + 1);
+
+    emit(ReelStatus.playing);
+  }
+
+  void disposeAll() {
+    for (var c in videoControllersCache.values) {
+      c.dispose();
     }
   }
 
   /// Navigate to the next reel
   void nextReel() {
     if (currentIndex + 1 < reels.length) {
-      initializeVideo(index: currentIndex + 1);
+      initalizeVideo(index: currentIndex + 1);
     }
+  }
+
+  Future<void> preloadVideo(int index) async {
+    if (index >= reels.length) return;
+
+    final url = reels[index].videoUrl;
+
+    final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+    await controller.initialize();
+    controller.setLooping(true);
+
+    videoControllersCache[index] = controller;
   }
 
   /// Navigate to the previous reel
   void previousReel() {
     if (currentIndex - 1 >= 0) {
-      initializeVideo(index: currentIndex - 1);
+      initalizeVideo(index: currentIndex - 1);
     }
   }
 

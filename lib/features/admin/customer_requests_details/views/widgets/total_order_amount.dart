@@ -20,7 +20,8 @@ class TotalOrderAmount extends StatelessWidget {
         padding: EdgeInsets.all(SizeConfig.width * 0.04),
         decoration: BoxDecoration(
           color: AppColors.kPrimaryColor.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(12
+          ),
           boxShadow: [
             BoxShadow(
               color: Color(0xFF104E8B).withOpacity(0.5),

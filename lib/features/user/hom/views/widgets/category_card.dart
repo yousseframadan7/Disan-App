@@ -17,39 +17,59 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
       onTap: () {
-        context.pushScreen(RouteNames.categoryScreen,
-            arguments: category.toJson());
+        context.pushScreen(
+          RouteNames.categoryScreen,
+          arguments: category.toJson(),
+        );
       },
-      child: SizedBox(
-        width: SizeConfig.width * 0.45,
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.width * 0.015,
-            vertical: SizeConfig.height * 0.01,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.kPrimaryColor.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: SizeConfig.width * 0.065,
-                backgroundImage: NetworkImage(category.image),
+      child: Container(
+        width: SizeConfig.width * .43,
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.width * .025,
+          vertical: SizeConfig.height * .012,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.kPrimaryColor, width: 1),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: SizeConfig.width * .14,
+              height: SizeConfig.width * .14,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey.shade100,
               ),
-              SizedBox(height: SizeConfig.height * 0.007),
-              Expanded(
-                child: TranslateText(
-                  text: category.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.title16White500,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  category.image,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(width: SizeConfig.width * .03),
+            Expanded(
+              child: TranslateText(
+                text: category.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.title16Blue500.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              color: AppColors.kPrimaryColor.withOpacity(.6),
+            ),
+          ],
         ),
       ),
     );

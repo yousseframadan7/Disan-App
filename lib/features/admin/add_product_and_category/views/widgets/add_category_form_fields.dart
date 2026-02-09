@@ -26,18 +26,22 @@ class AddCategoryFormFiels extends StatelessWidget {
               children: [
                 SizedBox(height: SizeConfig.height * 0.03),
                 CustomTextFormFieldWithTitle(
-                  hintText:LocaleKeys.enter_category_name.tr(), // "enter category name",
-                  title:LocaleKeys.category_name.tr(), // "Category Name",
+                  hintText: LocaleKeys.enter_category_name
+                      .tr(), // "enter category name",
+                  title: LocaleKeys.category_name.tr(), // "Category Name",
                   controller: cubit.nameController,
                 ),
                 SizedBox(height: SizeConfig.height * 0.015),
                 CustomTextFormFieldWithTitle(
-                  hintText:LocaleKeys.enter_category_description.tr(), // "enter category description",
-                  title:LocaleKeys.category_description.tr(), // "Category Description",
+                  hintText: LocaleKeys.enter_category_description
+                      .tr(), // "enter category description",
+                  title: LocaleKeys.category_description
+                      .tr(), // "Category Description",
                   controller: cubit.descriptionController,
                 ),
                 SizedBox(height: SizeConfig.height * 0.015),
-                Text( LocaleKeys.category_images.tr(), style: AppTextStyles.title18BlackBold),
+                Text(LocaleKeys.category_images.tr(),
+                    style: AppTextStyles.title18BlackBold),
                 SizedBox(height: SizeConfig.height * 0.015),
                 PickImage(
                   imageFile: cubit.categoryImage,
@@ -51,7 +55,7 @@ class AddCategoryFormFiels extends StatelessWidget {
                         ),
                       )
                     : CustomElevatedButton(
-                        name:LocaleKeys.add_category.tr(), 
+                        name: LocaleKeys.add_category.tr(),
                         onPressed: () {
                           cubit.addCategory();
                         },

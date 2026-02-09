@@ -196,6 +196,7 @@ class AddPostScreen extends StatelessWidget {
     );
   }
 }
+
 class InputActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -221,7 +222,7 @@ class InputActionButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [

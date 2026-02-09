@@ -50,7 +50,7 @@ dependencies:
   google_maps_flutter: ^2.12.3
   googleapis_auth: ^2.0.0
   image_picker: ^1.1.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   loading_indicator: ^3.1.1
   local_hero_transform: ^1.0.6
   lottie: ^3.3.1

@@ -27,7 +27,7 @@ class SendMessage extends StatelessWidget {
                 vertical: context.screenHeight * 0.01),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: CustomTextFormField(
               fillColor: Colors.black12,
