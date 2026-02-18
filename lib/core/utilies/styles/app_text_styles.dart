@@ -314,7 +314,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
   static TextStyle title16PrimaryColor = TextStyle(
-    color: AppColors.kPrimaryColor,
+    color: ,
     fontSize: getResponsiveFontSize(fontSize: 16),
   );
   static TextStyle title18PrimaryColorW500 = TextStyle(

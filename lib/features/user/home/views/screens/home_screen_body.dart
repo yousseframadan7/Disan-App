@@ -12,6 +12,7 @@ import 'package:disan/core/utilies/sizes/sized_config.dart';
 import 'package:disan/core/utilies/styles/app_text_styles.dart';
 import 'package:disan/features/admin/customer_requests_details/views/widgets/custom_failure_message.dart';
 import 'package:disan/features/admin/customer_requests_details/views/widgets/custom_loading.dart';
+import 'package:disan/features/admin/time_lines/post/views/screens/add_post_screen.dart';
 import 'package:disan/features/admin/time_lines/reel/models/reel_model.dart';
 import 'package:disan/features/admin/time_lines/reel/views/screens/reels_screen.dart';
 import 'package:disan/features/admin/time_lines/story/models/story_model.dart';
@@ -26,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class TimeLinesTab extends StatelessWidget {
@@ -63,8 +65,9 @@ class TimeLinesTab extends StatelessWidget {
               child: CustomDivider(topSpacing: SizeConfig.height * 0.00),
             ),
             SliverPadding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.04),
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.width * 0.04,
+              ),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   SectionTitle(title: LocaleKeys.reels.tr()),
@@ -92,17 +95,21 @@ class PostsListView extends StatelessWidget {
     return BlocBuilder<PostCubit, GetPostsState>(
       builder: (context, state) {
         if (state is GetPostsLoading) {
-          return SliverToBoxAdapter(child: const CustomLoading());
+          return const SliverToBoxAdapter(child: CustomLoading());
         }
+
         if (state is GetPostsFailure) {
           return SliverToBoxAdapter(
-              child: CustomFailureMesage(errorMessage: state.error));
+            child: CustomFailureMesage(errorMessage: state.error),
+          );
         }
+
         final posts = context.read<PostCubit>().posts;
+
         return SliverList(
           delegate: SliverChildBuilderDelegate(
-            childCount: posts.length,
             (context, index) => PostCard(post: posts[index]),
+            childCount: posts.length,
           ),
         );
       },
@@ -169,7 +176,8 @@ class PostInputField extends StatelessWidget {
             CircleAvatar(
               radius: SizeConfig.width * 0.07,
               backgroundImage: NetworkImage(
-                  getIt<CacheHelper>().getUserModel()?.image ?? ''),
+                getIt<CacheHelper>().getUserModel()?.image ?? '',
+              ),
               backgroundColor: Colors.grey.shade100,
             ),
             SizedBox(width: SizeConfig.width * 0.03),
@@ -181,8 +189,9 @@ class PostInputField extends StatelessWidget {
                   filled: true,
                   fillColor: Colors.grey.shade50,
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(SizeConfig.width * 0.03),
+                    borderRadius: BorderRadius.circular(
+                      SizeConfig.width * 0.03,
+                    ),
                     borderSide: BorderSide.none,
                   ),
                   hintStyle: AppTextStyles.title14BlackColorW400.copyWith(
@@ -221,7 +230,9 @@ class StoriesList extends StatelessWidget {
           final isShop = getIt<CacheHelper>().getUserModel()?.role == "shop";
           if (stories.isEmpty && !isShop) {
             return buildEmptyWidget(
-                LocaleKeys.no_stories_available.tr(), SizeConfig.height * 0.14);
+              LocaleKeys.no_stories_available.tr(),
+              SizeConfig.height * 0.14,
+            );
           }
 
           final displayItems = isShop ? [null, ...stories] : stories;
@@ -290,8 +301,10 @@ class StoriesList extends StatelessWidget {
 
   Widget buildAddStoryButton(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.pushScreen(RouteNames.addStoryAndReelsScreen,
-          arguments: "Story"),
+      onTap: () => context.pushScreen(
+        RouteNames.addStoryAndReelsScreen,
+        arguments: "Story",
+      ),
       child: Padding(
         padding: EdgeInsets.only(right: SizeConfig.width * 0.035),
         child: Column(
@@ -374,10 +387,12 @@ class StoriesList extends StatelessWidget {
               padding: EdgeInsets.all(SizeConfig.width * 0.008),
               child: CircleAvatar(
                 radius: SizeConfig.width * 0.08,
-                backgroundImage:
-                    story.url != '0' ? NetworkImage(story.user!.image) : null,
-                backgroundColor:
-                    story.url == '0' ? Colors.blueAccent : Colors.grey.shade100,
+                backgroundImage: story.url != '0'
+                    ? NetworkImage(story.user!.image)
+                    : null,
+                backgroundColor: story.url == '0'
+                    ? Colors.blueAccent
+                    : Colors.grey.shade100,
                 child: story.url == '0'
                     ? Padding(
                         padding: EdgeInsets.all(SizeConfig.width * 0.02),
@@ -463,7 +478,9 @@ class SuggestedReelsList extends StatelessWidget {
           final isShop = getIt<CacheHelper>().getUserModel()?.role == "shop";
           if (reels.isEmpty && !isShop) {
             return buildEmptyWidget(
-                LocaleKeys.no_reels_available.tr(), SizeConfig.height * 0.28);
+              LocaleKeys.no_reels_available.tr(),
+              SizeConfig.height * 0.28,
+            );
           }
 
           final displayItems = isShop ? [null, ...reels] : reels;
@@ -472,8 +489,9 @@ class SuggestedReelsList extends StatelessWidget {
             height: SizeConfig.height * 0.28,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding:
-                  EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.02),
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.width * 0.02,
+              ),
               itemCount: displayItems.length,
               itemBuilder: (context, index) {
                 if (isShop && index == 0) {
@@ -528,8 +546,10 @@ class SuggestedReelsList extends StatelessWidget {
 
   Widget buildAddReelButton(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.pushScreen(RouteNames.addStoryAndReelsScreen,
-          arguments: "Reel"),
+      onTap: () => context.pushScreen(
+        RouteNames.addStoryAndReelsScreen,
+        arguments: "Reel",
+      ),
       child: Container(
         width: SizeConfig.width * 0.4,
         height: SizeConfig.height * 0.28,
@@ -726,8 +746,11 @@ class CommentBottomSheet extends StatefulWidget {
   final PostModel post;
   final PostCubit postCubit;
 
-  const CommentBottomSheet(
-      {super.key, required this.post, required this.postCubit});
+  const CommentBottomSheet({
+    super.key,
+    required this.post,
+    required this.postCubit,
+  });
 
   @override
   _CommentBottomSheetState createState() => _CommentBottomSheetState();
@@ -770,8 +793,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           child: Column(
             children: [
               Container(
-                padding:
-                    EdgeInsets.symmetric(vertical: SizeConfig.height * 0.015),
+                padding: EdgeInsets.symmetric(
+                  vertical: SizeConfig.height * 0.015,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -787,8 +811,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 ),
               ),
               Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.04),
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.width * 0.04,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -846,9 +871,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 'No comments yet',
                                 style: AppTextStyles.title14BlackColorW400
                                     .copyWith(
-                                  color: Colors.grey.shade600,
-                                  fontSize: SizeConfig.width * 0.035,
-                                ),
+                                      color: Colors.grey.shade600,
+                                      fontSize: SizeConfig.width * 0.035,
+                                    ),
                               ),
                             ),
                           ),
@@ -857,13 +882,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       return ListView.builder(
                         controller: scrollController,
                         padding: EdgeInsets.symmetric(
-                            horizontal: SizeConfig.width * 0.04),
+                          horizontal: SizeConfig.width * 0.04,
+                        ),
                         itemCount: comments.length,
                         itemBuilder: (context, index) {
                           final comment = comments[index];
                           return Padding(
                             padding: EdgeInsets.symmetric(
-                                vertical: SizeConfig.height * 0.01),
+                              vertical: SizeConfig.height * 0.01,
+                            ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -888,13 +915,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             style: AppTextStyles
                                                 .title14BlackColorW400
                                                 .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  SizeConfig.width * 0.035,
-                                            ),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize:
+                                                      SizeConfig.width * 0.035,
+                                                ),
                                           ),
                                           SizedBox(
-                                              width: SizeConfig.width * 0.015),
+                                            width: SizeConfig.width * 0.015,
+                                          ),
                                           Text(
                                             DateHelper.formatTimeAgo(
                                               comment.createdAt,
@@ -905,22 +933,25 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             style: AppTextStyles
                                                 .title12BlackColorW400
                                                 .copyWith(
-                                              color: Colors.grey.shade600,
-                                              fontSize: SizeConfig.width * 0.03,
-                                            ),
+                                                  color: Colors.grey.shade600,
+                                                  fontSize:
+                                                      SizeConfig.width * 0.03,
+                                                ),
                                           ),
                                         ],
                                       ),
                                       SizedBox(
-                                          height: SizeConfig.height * 0.005),
+                                        height: SizeConfig.height * 0.005,
+                                      ),
                                       Text(
                                         comment.content,
                                         style: AppTextStyles
                                             .title14BlackColorW400
                                             .copyWith(
-                                          fontSize: SizeConfig.width * 0.035,
-                                          color: Colors.black87,
-                                        ),
+                                              fontSize:
+                                                  SizeConfig.width * 0.035,
+                                              color: Colors.black87,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -937,7 +968,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               Container(
                 padding: EdgeInsets.all(SizeConfig.width * 0.04).add(
                   EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -956,7 +988,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       CircleAvatar(
                         radius: SizeConfig.width * 0.05,
                         backgroundImage: NetworkImage(
-                            getIt<CacheHelper>().getUserModel()?.image ?? ''),
+                          getIt<CacheHelper>().getUserModel()?.image ?? '',
+                        ),
                         backgroundColor: Colors.grey.shade100,
                       ),
                       SizedBox(width: SizeConfig.width * 0.03),
@@ -1003,6 +1036,30 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final postCubit = context.read<PostCubit>();
+    final currentUserId = Supabase.instance.client.auth.currentUser?.id;
+
+    final bool isMyPost = post.shopId == currentUserId;
+
+    bool isShared = post.content.startsWith("__shared__");
+
+    String? sharedUserName;
+    String? sharedUserImage;
+    String? originalContent;
+    String? originalImage;
+
+    if (isShared) {
+      final parts = post.content.split("__");
+
+      /// format:
+      /// __shared__name__image__content__image
+      if (parts.length >= 6) {
+        sharedUserName = parts[2];
+        sharedUserImage = parts[3];
+        originalContent = parts[4];
+        originalImage = parts[5].isEmpty ? null : parts[5];
+      }
+    }
+
     return Card(
       elevation: SizeConfig.width * 0.01,
       shadowColor: Colors.grey.withOpacity(0.15),
@@ -1014,6 +1071,9 @@ class PostCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /// =========================
+          /// Header (الشخص اللي عمل share)
+          /// =========================
           Padding(
             padding: EdgeInsets.all(SizeConfig.width * 0.04),
             child: Row(
@@ -1051,15 +1111,17 @@ class PostCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            DateHelper.formatTimeAgo(DateTime.now(),
-                                locle: getIt<TranslationCubit>()
-                                    .state
-                                    .languageCode),
+                            DateHelper.formatTimeAgo(
+                              post.createdAt,
+                              locle:
+                                  getIt<TranslationCubit>().state.languageCode,
+                            ),
                             style: AppTextStyles.title12BlackColorW400.copyWith(
                               color: Colors.grey.shade600,
                               fontSize: SizeConfig.width * 0.03,
                             ),
                           ),
+                          SizedBox(width: SizeConfig.width * 0.01),
                           Icon(
                             Icons.public,
                             color: Colors.grey.shade600,
@@ -1070,60 +1132,151 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.more_horiz,
-                    color: Colors.grey.shade600,
-                    size: SizeConfig.width * 0.055,
+                if (isMyPost)
+                  PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_horiz,
+                      color: Colors.grey.shade600,
+                      size: SizeConfig.width * 0.055,
+                    ),
+                    onSelected: (value) {
+                      if (value == "edit") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AddPostScreen(post: post),
+                          ),
+                        );
+                      }
+                      if (value == "delete") {
+                        postCubit.deletePost(post.id);
+                      }
+                    },
+                    itemBuilder: (context) => const [
+                      PopupMenuItem(value: "edit", child: Text("Edit Post")),
+                      PopupMenuItem(
+                        value: "delete",
+                        child: Text("Delete Post"),
+                      ),
+                    ],
                   ),
-                  onPressed: () => showToast('More options - Coming soon'),
-                ),
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: SizeConfig.width * 0.04,
-              vertical: SizeConfig.height * 0.015,
-            ),
-            child: Text(
-              post.content,
-              style: AppTextStyles.title14BlackColorW400.copyWith(
-                fontSize: SizeConfig.width * 0.0375,
-                color: Colors.black87,
-                height: 1.4,
+
+          /// =========================
+          /// لو بوست share
+          /// =========================
+          if (isShared)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.width * 0.04,
+                vertical: SizeConfig.height * 0.01,
               ),
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          post.image == null
-              ? const SizedBox()
-              : AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius:
-                          BorderRadius.circular(SizeConfig.width * 0.025),
-                    ),
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(SizeConfig.width * 0.025),
-                      child: Image.network(
-                        post.image!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Center(
-                          child: Icon(
-                            Icons.image,
-                            size: SizeConfig.width * 0.2,
-                            color: Colors.grey.shade400,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300, width: 1),
+                  borderRadius: BorderRadius.circular(SizeConfig.width * 0.03),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// الشريط العلوي التقيل
+                    Container(
+                      padding: EdgeInsets.all(SizeConfig.width * 0.03),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.grey.shade300,
+                            width: 1,
                           ),
+                        ),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(SizeConfig.width * 0.03),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: SizeConfig.width * 0.045,
+                            backgroundImage: NetworkImage(
+                              sharedUserImage ?? "",
+                            ),
+                          ),
+                          SizedBox(width: SizeConfig.width * 0.02),
+                          Text(
+                            sharedUserName ?? "",
+                            style: AppTextStyles.title14BlackColorW400.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    /// المحتوى الاصلي
+                    Padding(
+                      padding: EdgeInsets.all(SizeConfig.width * 0.03),
+                      child: Text(
+                        originalContent ?? "",
+                        style: AppTextStyles.title14BlackColorW400.copyWith(
+                          fontSize: SizeConfig.width * 0.0375,
+                          color: Colors.black87,
+                          height: 1.4,
                         ),
                       ),
                     ),
-                  ),
+
+                    if (originalImage != null)
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(SizeConfig.width * 0.03),
+                          bottomRight: Radius.circular(SizeConfig.width * 0.03),
+                        ),
+                        child: Image.network(
+                          originalImage,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: SizeConfig.height * 0.28,
+                        ),
+                      ),
+                  ],
                 ),
+              ),
+            ),
+
+          /// =========================
+          /// لو مش share بوست عادي
+          /// =========================
+          if (!isShared)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.width * 0.04,
+                vertical: SizeConfig.height * 0.015,
+              ),
+              child: Text(
+                post.content,
+                style: AppTextStyles.title14BlackColorW400.copyWith(
+                  fontSize: SizeConfig.width * 0.0375,
+                  color: Colors.black87,
+                  height: 1.4,
+                ),
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+
+          if (!isShared && post.image != null)
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(SizeConfig.width * 0.025),
+                child: Image.network(post.image!, fit: BoxFit.cover),
+              ),
+            ),
+
+          /// likes + comments
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: SizeConfig.width * 0.04,
@@ -1159,12 +1312,14 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
+
           Divider(
             color: Colors.grey.shade200,
             thickness: SizeConfig.width * 0.00125,
             indent: SizeConfig.width * 0.04,
             endIndent: SizeConfig.width * 0.04,
           ),
+
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: SizeConfig.width * 0.03,
@@ -1177,10 +1332,11 @@ class PostCard extends StatelessWidget {
                   icon: Icons.thumb_up_outlined,
                   label: 'Like',
                   onTap: () {
-                    context.read<PostCubit>().toggleLike(post.id);
+                    postCubit.toggleLike(post.id);
                   },
-                  iconColor:
-                      post.likedByMe ? Colors.blueAccent : Colors.grey.shade700,
+                  iconColor: post.likedByMe
+                      ? Colors.blueAccent
+                      : Colors.grey.shade700,
                 ),
                 _PostActionButton(
                   icon: Icons.chat_bubble_outline,
@@ -1190,10 +1346,8 @@ class PostCard extends StatelessWidget {
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      builder: (context) => CommentBottomSheet(
-                        post: post,
-                        postCubit: postCubit,
-                      ),
+                      builder: (_) =>
+                          CommentBottomSheet(post: post, postCubit: postCubit),
                     );
                   },
                   iconColor: Colors.grey.shade700,
@@ -1201,7 +1355,7 @@ class PostCard extends StatelessWidget {
                 _PostActionButton(
                   icon: Icons.share_outlined,
                   label: 'Share',
-                  onTap: () => showToast('Share - Coming soon'),
+                  onTap: () => context.read<PostCubit>().sharePost(post),
                   iconColor: Colors.grey.shade700,
                 ),
               ],
@@ -1209,53 +1363,6 @@ class PostCard extends StatelessWidget {
           ),
           SizedBox(height: SizeConfig.height * 0.015),
         ],
-      ),
-    );
-  }
-}
-
-class _PostActionButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color iconColor;
-  final VoidCallback onTap;
-
-  const _PostActionButton({
-    required this.icon,
-    required this.label,
-    required this.iconColor,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      splashColor: Colors.grey.shade100,
-      borderRadius: BorderRadius.circular(SizeConfig.width * 0.02),
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: SizeConfig.height * 0.015,
-          horizontal: SizeConfig.width * 0.03,
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: iconColor,
-              size: SizeConfig.width * 0.055,
-            ),
-            SizedBox(width: SizeConfig.width * 0.015),
-            Text(
-              label,
-              style: AppTextStyles.title14BlackColorW400.copyWith(
-                color: Colors.grey.shade700,
-                fontSize: SizeConfig.width * 0.035,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -1298,6 +1405,41 @@ class PostTextField extends StatelessWidget {
       style: AppTextStyles.title14BlackColorW400.copyWith(
         color: Colors.black87,
         fontSize: SizeConfig.width * 0.0375,
+      ),
+    );
+  }
+}
+
+class _PostActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final Color iconColor;
+
+  const _PostActionButton({
+    Key? key,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    required this.iconColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Icon(icon, color: iconColor, size: SizeConfig.width * 0.04),
+          SizedBox(width: SizeConfig.width * 0.01),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: SizeConfig.width * 0.032,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        ],
       ),
     );
   }

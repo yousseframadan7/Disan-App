@@ -37,18 +37,20 @@ class StoryInteractionArea extends StatelessWidget {
                       ),
                     ],
                   ),
-                  maxLines:
-                      cubit.isExpanded[cubit.currentIndex] ?? false ? null : 5,
+                  maxLines: cubit.isExpanded[cubit.currentIndex] ?? false
+                      ? null
+                      : 5,
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (story.content.length > 100)
                   GestureDetector(
                     onTap: () => cubit.toggleExpand(cubit.currentIndex),
                     child: Text(
-                        cubit.isExpanded[cubit.currentIndex] ?? false
-                            ? LocaleKeys.read_less.tr()
-                            : LocaleKeys.read_more.tr(),
-                        style: AppTextStyles.title14BlueBold),
+                      cubit.isExpanded[cubit.currentIndex] ?? false
+                          ? LocaleKeys.read_less.tr()
+                          : LocaleKeys.read_more.tr(),
+                      style: AppTextStyles.title14BlueBold,
+                    ),
                   ),
               ],
             ),
@@ -62,7 +64,8 @@ class StoryInteractionArea extends StatelessWidget {
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.width * 0.03),
+                      horizontal: SizeConfig.width * 0.03,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(12),
@@ -74,8 +77,9 @@ class StoryInteractionArea extends StatelessWidget {
                         enabled: false,
                         border: InputBorder.none,
                         hintText: LocaleKeys.write_your_reply.tr(),
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.6)),
+                        hintStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                        ),
                       ),
                     ),
                   ),
@@ -88,8 +92,11 @@ class StoryInteractionArea extends StatelessWidget {
                   color: Colors.black.withOpacity(0.6),
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.favorite_border,
-                      color: Colors.white, size: SizeConfig.width * 0.07),
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: Colors.white,
+                    size: SizeConfig.width * 0.07,
+                  ),
                   onPressed: () => cubit.likeStory(context),
                 ),
               ),

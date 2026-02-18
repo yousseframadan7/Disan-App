@@ -57,8 +57,8 @@ class ProductActions extends StatelessWidget {
                         }
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                AppColors.kPrimaryColor.withOpacity(0.8),
+                            backgroundColor: AppColors.kPrimaryColor
+                                .withOpacity(0.8),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(36),
@@ -77,8 +77,7 @@ class ProductActions extends StatelessWidget {
                             LocaleKeys.add_to_cart.tr(),
                             style: AppTextStyles.title18WhiteBold,
                           ),
-                          onPressed: () =>
-                              cubit.addToCart(product: product),
+                          onPressed: () => cubit.addToCart(product: product),
                         );
                       },
                     ),
@@ -86,54 +85,57 @@ class ProductActions extends StatelessWidget {
                 ],
               )
             : getIt<CacheHelper>().getUserModel()!.role == 'shop' &&
-                    getIt<SupabaseClient>().auth.currentUser!.id ==
-                        product.shopId
-                ? Column(
-                    children: [
-                      BlocBuilder<AddToCartCubit, AddToCartState>(
-                        buildWhen: (previous, current) =>
-                            current is DeleteProductLoading,
-                        builder: (context, state) {
-                          if (state is DeleteProductLoading) {
-                            return const CustomCircleProgressIndecator();
-                          }
-                          return _buildAnimatedButton(
-                            context,
-                            LocaleKeys.delete_product.tr(),
-                            () => showToast("Coming soon"),
-                            Colors.red,
+                  getIt<SupabaseClient>().auth.currentUser!.id == product.shopId
+            ? Column(
+                children: [
+                  BlocBuilder<AddToCartCubit, AddToCartState>(
+                    buildWhen: (previous, current) =>
+                        current is DeleteProductLoading,
+                    builder: (context, state) {
+                      if (state is DeleteProductLoading) {
+                        return const CustomCircleProgressIndecator();
+                      }
+                      return _buildAnimatedButton(
+                        context,
+                        LocaleKeys.delete_product.tr(),
+                        () => showToast("Coming soon"),
+                        Colors.red,
+                      );
+                    },
+                  ),
+                  BlocBuilder<AddToCartCubit, AddToCartState>(
+                    buildWhen: (previous, current) =>
+                        current is UpdateProductLoading,
+                    builder: (context, state) {
+                      if (state is UpdateProductLoading) {
+                        return const CustomCircleProgressIndecator();
+                      }
+                      return _buildAnimatedButton(
+                        context,
+                        LocaleKeys.edit_product.tr(),
+                        () {
+                          context.pushScreen(
+                            RouteNames.editProductScreen,
+                            arguments: product.toJson(),
                           );
                         },
-                      ),
-                      BlocBuilder<AddToCartCubit, AddToCartState>(
-                        buildWhen: (previous, current) =>
-                            current is UpdateProductLoading,
-                        builder: (context, state) {
-                          if (state is UpdateProductLoading) {
-                            return const CustomCircleProgressIndecator();
-                          }
-                          return _buildAnimatedButton(
-                            context,
-                            LocaleKeys.edit_product.tr(),
-                            () {
-                              context.pushScreen(
-                                RouteNames.editProductScreen,
-                                arguments: product.toJson(),
-                              );
-                            },
-                            AppColors.kPrimaryColor.withOpacity(0.8),
-                          );
-                        },
-                      ),
-                    ],
-                  )
-                : Container();
+                        AppColors.kPrimaryColor.withOpacity(0.8),
+                      );
+                    },
+                  ),
+                ],
+              )
+            : Container();
       },
     );
   }
 
   Widget _buildAnimatedButton(
-      BuildContext context, String text, VoidCallback onPressed, Color color) {
+    BuildContext context,
+    String text,
+    VoidCallback onPressed,
+    Color color,
+  ) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: SizeConfig.width * 0.04,

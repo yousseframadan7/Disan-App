@@ -23,11 +23,7 @@ class MyApp extends StatelessWidget {
     if (isTest) {
       return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: Text('Test Mode'),
-          ),
-        ),
+        home: Scaffold(body: Center(child: Text('Test Mode'))),
       );
     }
 
@@ -52,8 +48,8 @@ class MyApp extends StatelessWidget {
                 routes: AppRoutes.routes,
                 initialRoute:
                     getIt<SupabaseClient>().auth.currentUser?.id != null
-                        ? RouteNames.homeScreen
-                        : RouteNames.splashScreen,
+                    ? RouteNames.homeScreen
+                    : RouteNames.splashScreen,
               );
             },
           );

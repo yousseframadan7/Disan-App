@@ -35,8 +35,10 @@ class RouteNames {
   static const String shopDetailsScreen = 'shopDetailsScreen';
   static const String shopProductsScreen = 'shopProductsScreen';
   static const String productDetailsScreen = 'productDetailsScreen';
-  static const String addProductAndCategoryScreen = 'addProductAndCategoryScreen';
-  static const String customerRequestsDetailsScreen = 'customerRequestsDetailsScreen';
+  static const String addProductAndCategoryScreen =
+      'addProductAndCategoryScreen';
+  static const String customerRequestsDetailsScreen =
+      'customerRequestsDetailsScreen';
   static const String chatScreen = 'chatScreen';
   static const String profileDetailsScreen = 'profileDetailsScreen';
   static const String myOrdersScreen = 'myOrdersScreen';
@@ -54,4 +56,8 @@ class RouteNames {
   static const String profileScreen = 'profileScreen';
   static const String discountTypeSelectionPage = 'discountTypeSelectionPage';
   static const String addPostScreen = 'addPostScreen';
+  static const String allProducts = 'allProducts';
+  static const String privacy = 'privacy';
+  static const String helpCenter = 'helpCenter';
+  static const String aboutUs = 'aboutUs';
 }

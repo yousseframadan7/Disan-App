@@ -10,11 +10,13 @@ class CustomIconButton extends StatelessWidget {
     this.iconSize,
     this.weight,
     this.child,
-    this.backgroundColor, this.hPadding, this.vPadding,
+    this.backgroundColor, this.hPadding, this.vPadding, this.onLongPressStart, this.onLongPressEnd,
   });
 
   final IconData? icon;
   final Function()? onPressed;
+  final void Function(LongPressStartDetails)? onLongPressStart;
+  final void Function(LongPressEndDetails)? onLongPressEnd;
   final Color? iconColor;
   final Widget? child;
   final double? iconSize;
@@ -26,6 +28,8 @@ class CustomIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
+      onLongPressStart: onLongPressStart,
+      onLongPressEnd: onLongPressEnd,
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor ?? Colors.transparent,

@@ -15,9 +15,7 @@ class LocationInfo extends StatelessWidget {
       child: Card(
         color: Colors.transparent,
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: EdgeInsets.all(SizeConfig.width * 0.04),
           child: Row(

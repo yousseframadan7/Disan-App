@@ -35,14 +35,15 @@ class AdminSpeedDial extends StatelessWidget {
         ),
         buildSpeedDialChild(
           icon: Icons.add,
-          title: '${LocaleKeys.add_product.tr()} & ${LocaleKeys.add_category.tr()}',
+          title:
+              '${LocaleKeys.add_product.tr()} & ${LocaleKeys.add_category.tr()}',
           onPressed: () =>
               context.pushScreen(RouteNames.addProductAndCategoryScreen),
         ),
         buildSpeedDialChild(
           icon: Icons.discount_outlined,
           title: LocaleKeys.offers.tr(),
-          onPressed: (){
+          onPressed: () {
             context.pushScreen(RouteNames.offersScreen);
           },
         ),

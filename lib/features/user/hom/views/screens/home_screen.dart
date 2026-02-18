@@ -1,3 +1,4 @@
+import 'package:disan/core/app_route/route_names.dart';
 import 'package:disan/core/cache/cache_helper.dart';
 import 'package:disan/core/di/dependancy_injection.dart';
 import 'package:disan/core/notifications/local_notifications_services.dart';
@@ -18,6 +19,15 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userModel = getIt<CacheHelper>().getUserModel();
+    if (userModel == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouteNames.selectRoleScreen,
+          (route) => false,
+        );
+      });
+      return const SizedBox();
+    }
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => HomeCubit()),
@@ -26,26 +36,31 @@ class UserHomeScreen extends StatelessWidget {
       ],
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
+          // التأكد إن state موجود
           final cubit = context.read<HomeCubit>();
+          final currentIndex = state.currentIndex;
+
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor: Colors.white,
-            body: userModel!.role == 'shop'
-                ? cubit.adminScreens[state.currentIndex]
-                : cubit.userScreens[state.currentIndex],
+            body: userModel.role == 'shop'
+                ? cubit.adminScreens[currentIndex]
+                : cubit.userScreens[currentIndex],
             bottomNavigationBar: userModel.role == 'shop'
                 ? AdminBottomNavBar(
-                    currentIndex: state.currentIndex,
+                    currentIndex: currentIndex,
                     onTap: cubit.changeIndex,
                   )
                 : UserBottomNavBar(
-                    currentIndex: state.currentIndex,
+                    currentIndex: currentIndex,
                     onTap: cubit.changeIndex,
                   ),
             floatingActionButtonLocation: context.locale.languageCode == 'en'
                 ? FloatingActionButtonLocation.endFloat
                 : FloatingActionButtonLocation.startFloat,
-            floatingActionButton:
-                userModel.role == 'shop' ? const AdminSpeedDial() : null,
+            floatingActionButton: userModel.role == 'shop'
+                ? const AdminSpeedDial()
+                : null,
           );
         },
       ),

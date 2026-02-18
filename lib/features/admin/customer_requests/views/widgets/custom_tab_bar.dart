@@ -19,7 +19,7 @@ class CustomTabBar extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Colors.white, width: 0.5),
         borderRadius: BorderRadius.circular(12),
-        color: AppColors.kPrimaryColor.withOpacity(0.8),
+        color: AppColors.kPrimaryColor,
       ),
       child: TabBar(
         dividerHeight: 0,

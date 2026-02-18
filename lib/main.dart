@@ -25,7 +25,9 @@ Future<void> clearOldCacheIfNeeded() async {
     // التطبيق تم تحديثه
     await DefaultCacheManager().emptyCache(); // مسح الكاش
     await prefs.setString(
-        'last_version', currentVersion); // تحديث النسخة المخزنة
+      'last_version',
+      currentVersion,
+    ); // تحديث النسخة المخزنة
     debugPrint("✅ Old cache cleared due to app update.");
   }
 }
@@ -38,9 +40,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Supabase.initialize(
     url: "https://rhrpfgeerupvmqgucrda.supabase.co",
     anonKey:
@@ -59,10 +59,7 @@ Future<void> main() async {
       path: 'assets/translations',
       fallbackLocale: Locale('en'),
       assetLoader: CodegenLoader(),
-      child: DevicePreview(
-        enabled: false,
-        builder: (context) => MyApp(),
-      ),
+      child: DevicePreview(enabled: false, builder: (context) => MyApp()),
     ),
   );
 }

@@ -37,28 +37,31 @@ class AddProductCubit extends Cubit<AddProductState> {
   Future<void> addProduct() async {
     try {
       if (productImage == null) {
-        emit(AddProductFailure(
-          message: "Please pick an image",
-        ));
+        emit(AddProductFailure(message: "Please pick an image"));
         return;
       }
       if (formKey.currentState!.validate()) {
         emit(AddProductLoading());
         log(getIt<SupabaseClient>().auth.currentUser!.id);
-        await addData(tableName: "products", data: {
-          "shop_id": getIt<SupabaseClient>().auth.currentUser!.id,
-          "name": nameController.text,
-          "price": priceController.text,
-          "description": descriptionController.text,
-          "category": categoryController.text,
-          "image_url": await uploadFileToSupabaseStorage(file: productImage!),
-          "stock": stockController.text,
-          "category_id": categories
-              .firstWhere((element) => element.name == categoryController.text)
-              .id
-              .toString(),
-          "shop_name": getIt<CacheHelper>().getUserModel()!.name,
-        });
+        await addData(
+          tableName: "products",
+          data: {
+            "shop_id": getIt<SupabaseClient>().auth.currentUser!.id,
+            "name": nameController.text,
+            "price": priceController.text,
+            "description": descriptionController.text,
+            "category": categoryController.text,
+            "image_url": await uploadFileToSupabaseStorage(file: productImage!),
+            "stock": stockController.text,
+            "category_id": categories
+                .firstWhere(
+                  (element) => element.name == categoryController.text,
+                )
+                .id
+                .toString(),
+            "shop_name": getIt<CacheHelper>().getUserModel()!.name,
+          },
+        );
         emit(AddProductSuccess());
       }
     } on Exception catch (e) {

@@ -10,7 +10,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'post_state.dart';
 
-
 class PostCubit extends Cubit<GetPostsState> {
   PostCubit() : super(GetPostsInitial()) {
     getPosts();
@@ -28,12 +27,9 @@ class PostCubit extends Cubit<GetPostsState> {
 
       final response = await supabase.rpc(
         'get_posts_with_likes_and_comments',
-        params: {
-          '_user_id': userId,
-          '_limit': 10,
-          '_offset': page * 10,
-        },
+        params: {'_user_id': userId, '_limit': 10, '_offset': page * 10},
       );
+      log("${response.toString()} yousssef");
 
       final List<PostModel> tempPosts = (response as List).map((e) {
         return PostModel.fromJson(e).copyWith(
@@ -69,16 +65,15 @@ class PostCubit extends Cubit<GetPostsState> {
 
   Future<void> toggleLike(String postId) async {
     try {
-      final response =
-          await supabase.rpc('toggle_like_post', params: {'_post_id': postId});
+      final response = await supabase.rpc(
+        'toggle_like_post',
+        params: {'_post_id': postId},
+      );
       final bool isLikedNow = response as bool;
       posts = posts.map((p) {
         if (p.id == postId) {
           final newLikes = (p.likesNum) + (isLikedNow ? 1 : -1);
-          return p.copyWith(
-            likesNum: newLikes,
-            likedByMe: isLikedNow,
-          );
+          return p.copyWith(likesNum: newLikes, likedByMe: isLikedNow);
         }
         return p;
       }).toList();
@@ -89,7 +84,10 @@ class PostCubit extends Cubit<GetPostsState> {
     }
   }
 
-  Future<void> addComment({required String postId, required String comment}) async {
+  Future<void> addComment({
+    required String postId,
+    required String comment,
+  }) async {
     try {
       await supabase.from('comments').insert({
         'target_id': postId,
@@ -126,7 +124,9 @@ class PostCubit extends Cubit<GetPostsState> {
         .listen((List<Map<String, dynamic>> data) async {
           try {
             // Fetch user data for each comment
-            final List<CommentModel> tempComments = data.map((e) => CommentModel.fromJson(e)).toList();
+            final List<CommentModel> tempComments = data
+                .map((e) => CommentModel.fromJson(e))
+                .toList();
             final List<CommentModel> updatedComments = await Future.wait(
               tempComments.map((comment) async {
                 try {
@@ -135,7 +135,9 @@ class PostCubit extends Cubit<GetPostsState> {
                       .select()
                       .eq('id', comment.userId)
                       .single();
-                  return comment.copyWith(user: UserModel.fromJson(userResponse));
+                  return comment.copyWith(
+                    user: UserModel.fromJson(userResponse),
+                  );
                 } catch (e) {
                   return comment;
                 }
@@ -149,6 +151,68 @@ class PostCubit extends Cubit<GetPostsState> {
             emit(GetCommentsFailure(error: e.toString()));
           }
         });
+  }
+
+  Future<void> deletePost(String postId) async {
+    try {
+      final currentUserId = supabase.auth.currentUser?.id;
+
+      final post = posts.firstWhere((element) => element.id == postId);
+
+      if (post.shopId != currentUserId) {
+        emit(GetPostsFailure(error: "You can't delete this post"));
+        return;
+      }
+
+      await supabase.from('blogs').delete().eq('id', postId);
+
+      posts.removeWhere((element) => element.id == postId);
+
+      emit(GetPostsSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(GetPostsFailure(error: e.toString()));
+    }
+  }
+
+  Future<void> sharePost(PostModel originalPost) async {
+    try {
+      emit(GetPostsLoading());
+      final currentUser = supabase.auth.currentUser;
+      if (currentUser == null) return;
+
+      String originalName = originalPost.user?.name ?? "";
+      String originalImage = originalPost.user?.image ?? "";
+      String content = originalPost.content;
+      String? image = originalPost.image;
+
+      /// لو البوست دا share اصلا نفكّه
+      if (content.startsWith("__shared__")) {
+        final parts = content.split("__");
+
+        if (parts.length >= 6) {
+          originalName = parts[2];
+          originalImage = parts[3];
+          content = parts[4];
+          image = parts[5].isEmpty ? null : parts[5];
+        }
+      }
+
+      final sharedContent =
+          "__shared__${originalName}__${originalImage}__${content}__${image ?? ""}";
+
+      await supabase.from("blogs").insert({
+        "content": sharedContent,
+        "image": image,
+        "shop_id": currentUser.id,
+        "created_at": DateTime.now().toIso8601String(),
+      });
+
+      await getPosts();
+    } catch (e) {
+      log(e.toString());
+      emit(GetPostsFailure(error: e.toString()));
+    }
   }
 
   @override

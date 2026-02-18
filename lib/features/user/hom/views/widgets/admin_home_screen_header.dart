@@ -12,10 +12,7 @@ import 'package:disan/core/utilies/styles/app_text_styles.dart';
 class AdminHomeScreenHeader extends StatelessWidget {
   final VoidCallback onMenuPressed;
 
-  const AdminHomeScreenHeader({
-    super.key,
-    required this.onMenuPressed,
-  });
+  const AdminHomeScreenHeader({super.key, required this.onMenuPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +26,18 @@ class AdminHomeScreenHeader extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: SizeConfig.width * 0.07,
-            backgroundImage:
-                NetworkImage(getIt<CacheHelper>().getUserModel()!.image),
+            backgroundImage: NetworkImage(
+              getIt<CacheHelper>().getUserModel()!.image,
+            ),
           ),
           SizedBox(width: SizeConfig.width * 0.03),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(LocaleKeys.hello.tr(),
-                  style: AppTextStyles.title18BlackBold),
+              Text(
+                LocaleKeys.hello.tr(),
+                style: AppTextStyles.title18BlackBold,
+              ),
               Text(
                 getIt<CacheHelper>().getUserModel()!.name,
                 style: AppTextStyles.title14Black,

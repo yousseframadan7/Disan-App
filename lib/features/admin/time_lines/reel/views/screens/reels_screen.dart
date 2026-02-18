@@ -17,8 +17,11 @@ import 'package:video_player/video_player.dart';
 class ReelsScreen extends StatefulWidget {
   final List<ReelModel> reels;
   final int initialIndex;
-  const ReelsScreen(
-      {super.key, required this.reels, required this.initialIndex});
+  const ReelsScreen({
+    super.key,
+    required this.reels,
+    required this.initialIndex,
+  });
 
   @override
   State<ReelsScreen> createState() => _ReelsScreenState();
@@ -120,8 +123,9 @@ class _ReelsScreenState extends State<ReelsScreen> {
                             children: [
                               CircleAvatar(
                                 radius: SizeConfig.width * 0.05,
-                                backgroundImage:
-                                    NetworkImage(updatedReel.userModel!.image),
+                                backgroundImage: NetworkImage(
+                                  updatedReel.userModel!.image,
+                                ),
                                 backgroundColor: Colors.grey.shade100,
                               ),
                               SizedBox(width: SizeConfig.width * 0.04),
@@ -138,8 +142,9 @@ class _ReelsScreenState extends State<ReelsScreen> {
                                     ),
                                     Text(
                                       updatedReel.caption ?? "No caption",
-                                      style:
-                                          const TextStyle(color: Colors.white),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -183,8 +188,10 @@ class _ReelsScreenState extends State<ReelsScreen> {
                               ),
                               SizedBox(height: SizeConfig.height * 0.02),
                               IconButton(
-                                icon: const Icon(Icons.comment,
-                                    color: Colors.white),
+                                icon: const Icon(
+                                  Icons.comment,
+                                  color: Colors.white,
+                                ),
                                 onPressed: () {
                                   showModalBottomSheet(
                                     context: context,
@@ -203,8 +210,10 @@ class _ReelsScreenState extends State<ReelsScreen> {
                               ),
                               SizedBox(height: SizeConfig.height * 0.02),
                               IconButton(
-                                icon: const Icon(Icons.more_horiz,
-                                    color: Colors.white),
+                                icon: const Icon(
+                                  Icons.more_horiz,
+                                  color: Colors.white,
+                                ),
                                 onPressed: () {
                                   showToast('Coming soon');
                                 },
@@ -229,8 +238,11 @@ class CommentBottomSheet extends StatefulWidget {
   final ReelModel reel;
   final ReelCubit reelCubit;
 
-  const CommentBottomSheet(
-      {super.key, required this.reel, required this.reelCubit});
+  const CommentBottomSheet({
+    super.key,
+    required this.reel,
+    required this.reelCubit,
+  });
 
   @override
   _CommentBottomSheetState createState() => _CommentBottomSheetState();
@@ -275,8 +287,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             child: Column(
               children: [
                 Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: SizeConfig.height * 0.015),
+                  padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.height * 0.015,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -292,8 +305,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: SizeConfig.width * 0.04),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.width * 0.04,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -328,17 +342,18 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       builder: (context, state) {
                         if (state == ReelStatus.commentsLoading) {
                           return const Center(
-                              child: CircularProgressIndicator());
+                            child: CircularProgressIndicator(),
+                          );
                         }
                         if (state == ReelStatus.commentsError) {
                           return Center(
                             child: Text(
                               'Error loading comments for reel ${widget.reel.id}',
-                              style:
-                                  AppTextStyles.title14BlackColorW400.copyWith(
-                                color: Colors.grey.shade600,
-                                fontSize: SizeConfig.width * 0.035,
-                              ),
+                              style: AppTextStyles.title14BlackColorW400
+                                  .copyWith(
+                                    color: Colors.grey.shade600,
+                                    fontSize: SizeConfig.width * 0.035,
+                                  ),
                             ),
                           );
                         }
@@ -353,9 +368,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                   'No comments yet!',
                                   style: AppTextStyles.title14BlackColorW400
                                       .copyWith(
-                                    color: Colors.grey.shade600,
-                                    fontSize: SizeConfig.width * 0.035,
-                                  ),
+                                        color: Colors.grey.shade600,
+                                        fontSize: SizeConfig.width * 0.035,
+                                      ),
                                 ),
                               ),
                             ),
@@ -364,13 +379,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         return ListView.builder(
                           controller: scrollController,
                           padding: EdgeInsets.symmetric(
-                              horizontal: SizeConfig.width * 0.04),
+                            horizontal: SizeConfig.width * 0.04,
+                          ),
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
                             final comment = comments[index];
                             return Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: SizeConfig.height * 0.01),
+                                vertical: SizeConfig.height * 0.01,
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -395,14 +412,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                               style: AppTextStyles
                                                   .title14BlackColorW400
                                                   .copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize:
-                                                    SizeConfig.width * 0.035,
-                                              ),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize:
+                                                        SizeConfig.width *
+                                                        0.035,
+                                                  ),
                                             ),
                                             SizedBox(
-                                                width:
-                                                    SizeConfig.width * 0.015),
+                                              width: SizeConfig.width * 0.015,
+                                            ),
                                             Text(
                                               DateHelper.formatTimeAgo(
                                                 comment.createdAt,
@@ -412,23 +430,25 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                               style: AppTextStyles
                                                   .title12BlackColorW400
                                                   .copyWith(
-                                                color: Colors.grey.shade600,
-                                                fontSize:
-                                                    SizeConfig.width * 0.03,
-                                              ),
+                                                    color: Colors.grey.shade600,
+                                                    fontSize:
+                                                        SizeConfig.width * 0.03,
+                                                  ),
                                             ),
                                           ],
                                         ),
                                         SizedBox(
-                                            height: SizeConfig.height * 0.005),
+                                          height: SizeConfig.height * 0.005,
+                                        ),
                                         Text(
                                           comment.content,
                                           style: AppTextStyles
                                               .title14BlackColorW400
                                               .copyWith(
-                                            fontSize: SizeConfig.width * 0.035,
-                                            color: Colors.black87,
-                                          ),
+                                                fontSize:
+                                                    SizeConfig.width * 0.035,
+                                                color: Colors.black87,
+                                              ),
                                         ),
                                       ],
                                     ),
@@ -445,7 +465,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 Container(
                   padding: EdgeInsets.all(SizeConfig.width * 0.04).add(
                     EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -464,7 +485,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         CircleAvatar(
                           radius: SizeConfig.width * 0.05,
                           backgroundImage: NetworkImage(
-                              getIt<CacheHelper>().getUserModel()?.image ?? ''),
+                            getIt<CacheHelper>().getUserModel()?.image ?? '',
+                          ),
                           backgroundColor: Colors.grey.shade100,
                         ),
                         SizedBox(width: SizeConfig.width * 0.03),
@@ -477,14 +499,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                               fillColor: Colors.grey.shade50,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
-                                    SizeConfig.width * 0.03),
+                                  SizeConfig.width * 0.03,
+                                ),
                                 borderSide: BorderSide.none,
                               ),
-                              hintStyle:
-                                  AppTextStyles.title14BlackColorW400.copyWith(
-                                color: Colors.grey.shade600,
-                                fontSize: SizeConfig.width * 0.035,
-                              ),
+                              hintStyle: AppTextStyles.title14BlackColorW400
+                                  .copyWith(
+                                    color: Colors.grey.shade600,
+                                    fontSize: SizeConfig.width * 0.035,
+                                  ),
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: SizeConfig.width * 0.04,
                                 vertical: SizeConfig.height * 0.015,
@@ -508,12 +531,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             if (_commentController.text.trim().isNotEmpty) {
                               widget.reelCubit
                                   .addComment(
-                                reelId: widget.reel.id,
-                                comment: _commentController.text.trim(),
-                              )
+                                    reelId: widget.reel.id,
+                                    comment: _commentController.text.trim(),
+                                  )
                                   .then((_) {
-                                showToast('Comment added successfully');
-                              });
+                                    showToast('Comment added successfully');
+                                  });
                               _commentController.clear();
                             }
                           },

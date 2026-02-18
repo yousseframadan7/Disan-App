@@ -14,12 +14,11 @@ import 'package:disan/core/cache/cache_helper.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 
 class AddPostScreen extends StatelessWidget {
-  const AddPostScreen({super.key});
+  final dynamic post;
+  const AddPostScreen({super.key, this.post});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController postController = TextEditingController();
-
     return BlocProvider(
       create: (_) => AddPostCubit(),
       child: BlocConsumer<AddPostCubit, AddPostState>(
@@ -34,17 +33,29 @@ class AddPostScreen extends StatelessWidget {
             context.popScreen();
             quickAlert(
               type: QuickAlertType.success,
-              text: "Post Added Successfully",
+              text: post == null
+                  ? "Post Added Successfully"
+                  : "Post Updated Successfully",
               title: "Success",
             );
           }
         },
         builder: (context, state) {
           final cubit = context.read<AddPostCubit>();
+
+          if (post != null && cubit.isEditInitialized == false) {
+            cubit.postContentController.text = post.content ?? "";
+            cubit.oldImage = post.image;
+            cubit.isEditInitialized = true;
+          }
+
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Text('Create Post', style: AppTextStyles.title18BlackBold),
+              title: Text(
+                post == null ? 'Create Post' : 'Edit Post',
+                style: AppTextStyles.title18BlackBold,
+              ),
               centerTitle: true,
               backgroundColor: Colors.white,
               elevation: 0,
@@ -60,7 +71,11 @@ class AddPostScreen extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      cubit.submitPost();
+                      if (post == null) {
+                        cubit.submitPost();
+                      } else {
+                        cubit.updatePost(postId: post.id);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.kPrimaryColor,
@@ -80,12 +95,14 @@ class AddPostScreen extends StatelessWidget {
                               color: Colors.white,
                             ),
                           )
-                        : Text('Post',
+                        : Text(
+                            post == null ? 'Post' : 'Edit',
                             style: AppTextStyles.title14BlackColorW400.copyWith(
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                            )),
+                            ),
+                          ),
                   ),
                 ),
               ],
@@ -121,16 +138,19 @@ class AddPostScreen extends StatelessWidget {
                               SizedBox(height: SizeConfig.height * 0.005),
                               Row(
                                 children: [
-                                  Icon(Icons.public,
-                                      color: Colors.grey.shade600, size: 14),
+                                  Icon(
+                                    Icons.public,
+                                    color: Colors.grey.shade600,
+                                    size: 14,
+                                  ),
                                   SizedBox(width: SizeConfig.width * 0.01),
                                   Text(
                                     'Public',
                                     style: AppTextStyles.title12BlackColorW400
                                         .copyWith(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 12,
-                                    ),
+                                          color: Colors.grey.shade600,
+                                          fontSize: 12,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -163,6 +183,42 @@ class AddPostScreen extends StatelessWidget {
                             right: 8,
                             child: GestureDetector(
                               onTap: () => cubit.removeImage(),
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.5),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    else if (post != null && cubit.oldImage != null)
+                      Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              cubit.oldImage!,
+                              width: double.infinity,
+                              height: SizeConfig.height * 0.3,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: GestureDetector(
+                              onTap: () {
+                                cubit.oldImage = null;
+                                cubit.emit(AddPostImageRemoved());
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(

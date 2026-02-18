@@ -34,6 +34,7 @@
 //     RouteNames.addProductAndCategoryScreen: (context) => const AddProductAndCategoryScreen(),
 //   };
 // }
+import 'package:disan/features/about_us/about_us_page.dart';
 import 'package:disan/features/admin/add_offers/views/screens/add_offers_screen.dart';
 import 'package:disan/features/admin/add_product_and_category/views/screens/add_product_and_category_screen.dart';
 import 'package:disan/features/admin/customer_chats/views/screens/chats_screen.dart';
@@ -49,6 +50,9 @@ import 'package:disan/features/auth/customer_sign_up/views/screens/customer_sign
 import 'package:disan/features/auth/select_role/views/screens/select_role_screen.dart';
 import 'package:disan/features/auth/shop_sign_up/views/screens/sign_up_screen.dart';
 import 'package:disan/features/chat/views/screens/chat_screen.dart';
+import 'package:disan/features/get_all_products/ui/all_products.dart';
+import 'package:disan/features/help_center/help_center.dart';
+import 'package:disan/features/privacy_page/privacy_page.dart';
 import 'package:disan/features/splash/views/screens/splash_screen.dart';
 import 'package:disan/core/app_route/route_names.dart';
 import 'package:disan/features/auth/forget_password/views/screens/forget_password_screen.dart';
@@ -73,41 +77,52 @@ import 'package:flutter/material.dart';
 class AppRoutes {
   static Map<String, Widget Function(BuildContext)> routes =
       <String, WidgetBuilder>{
-    RouteNames.splashScreen: (context) => const SplashScreen(),
-    RouteNames.onBoardingScreen: (context) => const OnBoardingScreen(),
-    RouteNames.customerSignUpScreen: (context) => const CustomerSignUpScreen(),
-    RouteNames.shopSignUpScreen: (context) => const ShopSignUpScreen(),
-    RouteNames.signInScreen: (context) => const SignInScreen(),
-    RouteNames.selectRoleScreen: (context) => const SelectRoleScreen(),
-    RouteNames.forgetPasswordScreen: (context) => const ForgetPasswordScreen(),
-    RouteNames.homeScreen: (context) => const UserHomeScreen(),
-    RouteNames.categoryScreen: (context) => const CategoryScreen(),
-    RouteNames.productDetailsScreen: (context) => const ProductDetailsScreen(),
-    RouteNames.addProductAndCategoryScreen: (context) =>
-        const AddProductAndCategoryScreen(),
-    RouteNames.customerRequestsDetailsScreen: (context) =>
-        const CustomerRequestsDetailsScreen(),
-    RouteNames.chatScreen: (context) => const ChatScreen(),
-    RouteNames.profileDetailsScreen: (context) => const ProfileDetailsScreen(),
-    RouteNames.myOrdersScreen: (context) => const MyOrdersScreen(),
-    RouteNames.myOrdersDetailsScreen: (context) =>
-        const MyOrdersDetailsScreen(),
-    RouteNames.customerDetailsScreen: (context) =>
-        const CustomerDetailsScreen(),
-    RouteNames.aboutScreen: (context) => const AboutScreen(),
-    RouteNames.contactSupportScreen: (context) => const ContactSupportScreen(),
-    RouteNames.settingsScreen: (context) => const SettingsScreen(),
-    RouteNames.customersScreen: (context) => const CustomersScreen(),
-    RouteNames.chatsScreen: (context) => const ChatsScreen(),
-    RouteNames.offersScreen: (context) => const OffersScreen(),
-    RouteNames.addOfferScreen: (context) => const AddOfferScreen(),
-    RouteNames.editProductScreen: (context) => const EditProductScreen(),
-    RouteNames.profileScreen: (context) => const ProfileScreen(),
-    RouteNames.cartScreen: (context) => const CartScreen(),
-    RouteNames.shopDetailsScreen: (context) => const ShopDetailsScreen(),
-    RouteNames.shopProductsScreen: (context) => const ShopProductsScreen(),
-    RouteNames.addStoryAndReelsScreen: (context) => const AddStoryAndReels(),
-    RouteNames.discountTypeSelectionPage:(context)=>const SelectOfferTypeScreen(),
-    RouteNames.addPostScreen: (context) => const AddPostScreen(),
-  };
+        RouteNames.splashScreen: (context) => const SplashScreen(),
+        RouteNames.onBoardingScreen: (context) => const OnBoardingScreen(),
+        RouteNames.customerSignUpScreen: (context) =>
+            const CustomerSignUpScreen(),
+        RouteNames.shopSignUpScreen: (context) => const ShopSignUpScreen(),
+        RouteNames.signInScreen: (context) => const SignInScreen(),
+        RouteNames.selectRoleScreen: (context) => const SelectRoleScreen(),
+        RouteNames.forgetPasswordScreen: (context) =>
+            const ForgetPasswordScreen(),
+        RouteNames.homeScreen: (context) => const UserHomeScreen(),
+        RouteNames.categoryScreen: (context) => const CategoryScreen(),
+        RouteNames.productDetailsScreen: (context) =>
+            const ProductDetailsScreen(),
+        RouteNames.addProductAndCategoryScreen: (context) =>
+            const AddProductAndCategoryScreen(),
+        RouteNames.customerRequestsDetailsScreen: (context) =>
+            const CustomerRequestsDetailsScreen(),
+        RouteNames.chatScreen: (context) => const ChatScreen(),
+        RouteNames.profileDetailsScreen: (context) =>
+            const ProfileDetailsScreen(),
+        RouteNames.myOrdersScreen: (context) => const MyOrdersScreen(),
+        RouteNames.myOrdersDetailsScreen: (context) =>
+            const MyOrdersDetailsScreen(),
+        RouteNames.customerDetailsScreen: (context) =>
+            const CustomerDetailsScreen(),
+        RouteNames.aboutScreen: (context) => const AboutScreen(),
+        RouteNames.contactSupportScreen: (context) =>
+            const ContactSupportScreen(),
+        RouteNames.settingsScreen: (context) => const SettingsScreen(),
+        RouteNames.customersScreen: (context) => const CustomersScreen(),
+        RouteNames.chatsScreen: (context) => const ChatsScreen(),
+        RouteNames.offersScreen: (context) => const OffersScreen(),
+        RouteNames.addOfferScreen: (context) => const AddOfferScreen(),
+        RouteNames.editProductScreen: (context) => const EditProductScreen(),
+        RouteNames.profileScreen: (context) => const ProfileScreen(),
+        RouteNames.cartScreen: (context) => const CartScreen(),
+        RouteNames.shopDetailsScreen: (context) => const ShopDetailsScreen(),
+        RouteNames.shopProductsScreen: (context) => const ShopProductsScreen(),
+        RouteNames.addStoryAndReelsScreen: (context) =>
+            const AddStoryAndReels(),
+        RouteNames.discountTypeSelectionPage: (context) =>
+            const SelectOfferTypeScreen(),
+        RouteNames.addPostScreen: (context) => const AddPostScreen(),
+        RouteNames.allProducts: (context) => const AllProductsPage(),
+        RouteNames.privacy: (context) => const PrivacyPolicyPage(),
+        RouteNames.helpCenter: (context) => const HelpCenterPage(),
+        RouteNames.aboutUs: (context) => const AboutUsPage(),
+      };
 }

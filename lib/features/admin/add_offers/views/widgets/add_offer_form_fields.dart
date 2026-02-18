@@ -13,7 +13,6 @@ import 'package:disan/features/admin/add_offers/views/widgets/custom_drop_down_b
 import 'package:disan/features/admin/add_offers/views/widgets/custom_offer_text_field.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:disan/generated/locale_keys.g.dart';
-import 'package:intl/intl.dart';
 
 class AddOfferFormFields extends StatelessWidget {
   final AddOfferCubit cubit;
@@ -51,8 +50,9 @@ class AddOfferFormFields extends StatelessWidget {
           title: LocaleKeys.product_name.tr(),
           primaryColor: AppColors.kPrimaryColor,
           onChanged: (value) {
-            cubit.selectedProduct =
-                cubit.products.firstWhere((p) => p.id == value!.id);
+            cubit.selectedProduct = cubit.products.firstWhere(
+              (p) => p.id == value!.id,
+            );
           },
         ),
         SizedBox(height: SizeConfig.height * 0.025),
@@ -88,6 +88,3 @@ class AddOfferFormFields extends StatelessWidget {
     );
   }
 }
-
-
-

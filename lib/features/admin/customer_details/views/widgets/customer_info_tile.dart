@@ -2,7 +2,7 @@ import 'package:disan/core/utilies/colors/app_colors.dart';
 import 'package:disan/core/utilies/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
-class CustomerInfoTile  extends StatelessWidget {
+class CustomerInfoTile extends StatelessWidget {
   const CustomerInfoTile({
     super.key,
     required this.value,
@@ -17,10 +17,7 @@ class CustomerInfoTile  extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: AppTextStyles.title20BlackBold,
-        ),
+        Text(title, style: AppTextStyles.title20BlackBold),
         ListTile(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -28,10 +25,7 @@ class CustomerInfoTile  extends StatelessWidget {
           ),
           tileColor: AppColors.kPrimaryColor.withOpacity(0.7),
           leading: Icon(icon, color: Colors.white),
-          title: Text(
-            value,
-            style: AppTextStyles.title16WhiteBold,
-          ),
+          title: Text(value, style: AppTextStyles.title16WhiteBold),
         ),
       ],
     );

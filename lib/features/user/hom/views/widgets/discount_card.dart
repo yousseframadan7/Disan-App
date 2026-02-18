@@ -9,11 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DiscountCard extends StatelessWidget {
-  const DiscountCard({
-    super.key,
-    required this.offerModel,
-
-  });
+  const DiscountCard({super.key, required this.offerModel});
   final OfferModel offerModel;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +34,7 @@ class DiscountCard extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 AppColors.kPrimaryColor.withOpacity(0.3),
-                Colors.black45
+                Colors.black45,
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -48,11 +44,15 @@ class DiscountCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('50-40% ${LocaleKeys.off.tr()}',
-                  style: AppTextStyles.title22WhiteColorBold),
+              Text(
+                '50-40% ${LocaleKeys.off.tr()}',
+                style: AppTextStyles.title22WhiteColorBold,
+              ),
               SizedBox(height: SizeConfig.height * 0.005),
-               Text(LocaleKeys.now_on_all_products.tr(),
-                  style: TextStyle(color: Colors.white)),
+              Text(
+                LocaleKeys.now_on_all_products.tr(),
+                style: TextStyle(color: Colors.white),
+              ),
               SizedBox(height: SizeConfig.height * 0.005),
               CustomTextButtonWithIconWithBackground(
                 title: LocaleKeys.shop_now.tr(),

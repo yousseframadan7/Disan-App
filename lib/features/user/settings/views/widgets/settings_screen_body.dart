@@ -52,20 +52,22 @@ class SettingsScreenBody extends StatelessWidget {
                   color: AppColors.kPrimaryColor,
                 ),
               ),
-              SizedBox(height: SizeConfig.height * 0.02),
-              _AnimatedTile(
-                child: ProfileListTile(
-                  lable: LocaleKeys.Notifications.tr(),
-                  icon: Icons.notifications_none_rounded,
-                ),
-              ),
+
               SizedBox(height: SizeConfig.height * 0.02),
               _AnimatedTile(child: _LanguageSelectionTile()),
               SizedBox(height: SizeConfig.height * 0.02),
-              _AnimatedTile(
-                child: ProfileListTile(
-                  lable: LocaleKeys.Privacy.tr(),
-                  icon: Icons.privacy_tip_outlined,
+              GestureDetector(
+                onTap: () {
+                  context.pushScreen(RouteNames.privacy);
+                },
+                child: _AnimatedTile(
+                  child: ProfileListTile(
+                    onTap: () {
+                      context.pushScreen(RouteNames.privacy);
+                    },
+                    lable: LocaleKeys.Privacy.tr(),
+                    icon: Icons.privacy_tip_outlined,
+                  ),
                 ),
               ),
               SizedBox(height: SizeConfig.height * 0.02),
@@ -74,6 +76,9 @@ class SettingsScreenBody extends StatelessWidget {
                 child: ProfileListTile(
                   lable: LocaleKeys.help_center.tr(),
                   icon: Icons.help_outline_outlined,
+                  onTap: () {
+                    context.pushScreen(RouteNames.helpCenter);
+                  },
                 ),
               ),
               SizedBox(height: SizeConfig.height * 0.02),
@@ -82,6 +87,9 @@ class SettingsScreenBody extends StatelessWidget {
                 child: ProfileListTile(
                   lable: LocaleKeys.About.tr(),
                   icon: Icons.info_outline,
+                  onTap: () {
+                    context.pushScreen(RouteNames.aboutScreen);
+                  },
                 ),
               ),
             ],
@@ -114,9 +122,10 @@ class _AnimatedTileState extends State<_AnimatedTile>
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.95,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -148,8 +157,10 @@ class _AnimatedTileState extends State<_AnimatedTile>
 class _LanguageSelectionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final currentLanguage =
-        context.watch<TranslationCubit>().state.languageCode;
+    final currentLanguage = context
+        .watch<TranslationCubit>()
+        .state
+        .languageCode;
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
@@ -199,7 +210,8 @@ class _LanguageSelectionTile extends StatelessWidget {
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-            top: Radius.circular(SizeConfig.width * 0.05)),
+          top: Radius.circular(SizeConfig.width * 0.05),
+        ),
       ),
       backgroundColor: Colors.white,
       builder: (context) => Padding(
@@ -222,22 +234,20 @@ class _LanguageSelectionTile extends StatelessWidget {
                 color: AppColors.kPrimaryColor,
                 size: SizeConfig.width * 0.06,
               ),
-              title: Text(
-                'English',
-                style: AppTextStyles.title14Black,
-              ),
+              title: Text('English', style: AppTextStyles.title14Black),
               trailing:
                   context.watch<TranslationCubit>().state.languageCode == 'en'
-                      ? Icon(
-                          Icons.check_circle,
-                          color: AppColors.kPrimaryColor,
-                          size: SizeConfig.width * 0.06,
-                        )
-                      : null,
+                  ? Icon(
+                      Icons.check_circle,
+                      color: AppColors.kPrimaryColor,
+                      size: SizeConfig.width * 0.06,
+                    )
+                  : null,
               onTap: () async {
-                await context
-                    .read<TranslationCubit>()
-                    .changeLanguage(context, 'en');
+                await context.read<TranslationCubit>().changeLanguage(
+                  context,
+                  'en',
+                );
                 context.popScreen();
                 context.pushAndRemoveUntilScreen(RouteNames.homeScreen);
                 quickAlert(
@@ -252,22 +262,20 @@ class _LanguageSelectionTile extends StatelessWidget {
                 color: AppColors.kPrimaryColor,
                 size: SizeConfig.width * 0.06,
               ),
-              title: Text(
-                'العربية',
-                style: AppTextStyles.title14Black,
-              ),
+              title: Text('العربية', style: AppTextStyles.title14Black),
               trailing:
                   context.watch<TranslationCubit>().state.languageCode == 'ar'
-                      ? Icon(
-                          Icons.check_circle,
-                          color: AppColors.kPrimaryColor,
-                          size: SizeConfig.width * 0.06,
-                        )
-                      : null,
+                  ? Icon(
+                      Icons.check_circle,
+                      color: AppColors.kPrimaryColor,
+                      size: SizeConfig.width * 0.06,
+                    )
+                  : null,
               onTap: () async {
-                await context
-                    .read<TranslationCubit>()
-                    .changeLanguage(context, 'ar');
+                await context.read<TranslationCubit>().changeLanguage(
+                  context,
+                  'ar',
+                );
                 context.popScreen();
                 context.pushAndRemoveUntilScreen(RouteNames.homeScreen);
                 quickAlert(

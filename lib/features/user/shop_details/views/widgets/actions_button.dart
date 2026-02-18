@@ -48,17 +48,20 @@ class ActionButtons extends StatelessWidget {
             onPressed: () {
               log(getIt<SupabaseClient>().auth.currentUser!.id);
               log(shopModel.id);
-              context.pushScreen(RouteNames.chatScreen,
-                  arguments: CustomerChatModel(
-                    id: shopModel.id +
-                        getIt<SupabaseClient>().auth.currentUser!.id,
-                    customerId: getIt<SupabaseClient>().auth.currentUser!.id,
-                    shopId: shopModel.id,
-                    customer: CustomerModel(
-                      name: shopModel.name,
-                      image: shopModel.image,
-                    ),
-                  ).toJson());
+              context.pushScreen(
+                RouteNames.chatScreen,
+                arguments: CustomerChatModel(
+                  id:
+                      shopModel.id +
+                      getIt<SupabaseClient>().auth.currentUser!.id,
+                  customerId: getIt<SupabaseClient>().auth.currentUser!.id,
+                  shopId: shopModel.id,
+                  customer: CustomerModel(
+                    name: shopModel.name,
+                    image: shopModel.image,
+                  ),
+                ).toJson(),
+              );
             },
           ),
         ],

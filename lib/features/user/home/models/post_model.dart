@@ -36,14 +36,14 @@ class PostModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'content': content,
-        'image': image,
-        'id': id,
-        'shop_id': shopId,
-        'created_at': createdAt.toIso8601String(),
-        'comments_count': commentsCount,
-        'likes_num': likesNum,
-      };
+    'content': content,
+    'image': image,
+    'id': id,
+    'shop_id': shopId,
+    'created_at': createdAt.toIso8601String(),
+    'comments_count': commentsCount,
+    'likes_num': likesNum,
+  };
 
   PostModel copyWith({
     String? content,

@@ -252,5 +252,35 @@
   "shop_email": "Shop Email",
   "select_role": "Select Role",
   "shop": "Shop",
-  "customer": "Customer"
+  "customer": "Customer",
+  
+  "privacy_policy": "Privacy Policy",
+  "last_updated": "Last updated: March 2024",
+
+  "section_intro_title": "1. Introduction",
+  "section_intro_body": "This Privacy Policy explains how our e-commerce application collects, uses, and protects your personal information when you use our app.",
+
+  "section_collect_title": "2. Information We Collect",
+  "section_collect_body": "We may collect personal data such as name, email address, phone number, shipping address, billing address, payment information, order history, and app usage data.",
+
+  "section_use_title": "3. How We Use Your Information",
+  "section_use_body": "We use your information to process orders, deliver products, improve our services, communicate with you, and provide customer support.",
+
+  "section_security_title": "4. Data Security",
+  "section_security_body": "We take appropriate security measures to protect your personal data against unauthorized access, alteration, or disclosure.",
+
+  "section_third_party_title": "5. Third-Party Services",
+  "section_third_party_body": "We may use trusted third-party services such as payment gateways and analytics tools, which have their own privacy policies.",
+
+  "section_rights_title": "6. Your Rights",
+  "section_rights_body": "You have the right to access, update, or request deletion of your personal information, and you may opt out of promotional messages at any time.",
+
+  "section_changes_title": "7. Changes to This Policy",
+  "section_changes_body": "We may update this Privacy Policy from time to time. Any changes will be available inside the app.",
+
+  "section_contact_title": "8. Contact Us",
+  "section_contact_body": "If you have any questions about this Privacy Policy, please contact us through the app support section."
+
+  
+
 }

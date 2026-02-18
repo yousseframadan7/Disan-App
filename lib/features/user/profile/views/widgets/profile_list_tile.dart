@@ -10,30 +10,20 @@ class ProfileListTile extends StatelessWidget {
     required this.lable,
     this.route,
     required this.icon,
+    required this.onTap,
   });
   final String lable;
   final String? route;
   final IconData icon;
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
-        if (route != null) {
-          context.pushScreen(route!);
-        } else {
-          showToast('Coming soon');
-        }
-      },
+      onTap: onTap,
       tileColor: Colors.grey.shade200,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      leading: Icon(
-        icon,
-        color: AppColors.kPrimaryColor,
-      ),
-      title: Text(
-        lable,
-        style: AppTextStyles.title18BlackW500,
-      ),
+      leading: Icon(icon, color: AppColors.kPrimaryColor),
+      title: Text(lable, style: AppTextStyles.title18BlackW500),
       trailing: Icon(
         Icons.arrow_forward_ios_rounded,
         color: AppColors.kPrimaryColor,

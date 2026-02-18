@@ -14,10 +14,7 @@ import 'package:disan/core/utilies/styles/app_text_styles.dart';
 class UserHomeScreenHeader extends StatelessWidget {
   final VoidCallback onMenuPressed;
 
-  const UserHomeScreenHeader({
-    super.key,
-    required this.onMenuPressed,
-  });
+  const UserHomeScreenHeader({super.key, required this.onMenuPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +28,18 @@ class UserHomeScreenHeader extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: SizeConfig.width * 0.07,
-            backgroundImage:
-                NetworkImage(getIt<CacheHelper>().getUserModel()!.image),
+            backgroundImage: NetworkImage(
+              getIt<CacheHelper>().getUserModel()!.image,
+            ),
           ),
           SizedBox(width: SizeConfig.width * 0.03),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(LocaleKeys.hello.tr(), style: AppTextStyles.title18BlackBold),
+              Text(
+                LocaleKeys.hello.tr(),
+                style: AppTextStyles.title18BlackBold,
+              ),
               Text(
                 getIt<CacheHelper>().getUserModel()!.name,
                 style: AppTextStyles.title14Black,
@@ -49,12 +50,12 @@ class UserHomeScreenHeader extends StatelessWidget {
           CustomIconButton(
             iconSize: SizeConfig.width * 0.06,
             iconColor: Colors.white,
-            onPressed: (){
+            onPressed: () {
               context.pushScreen(RouteNames.cartScreen);
             },
             hPadding: SizeConfig.width * 0.03,
             vPadding: SizeConfig.height * 0.03,
-            backgroundColor: AppColors.kPrimaryColor.withOpacity(0.5),
+            backgroundColor: AppColors.kPrimaryColor,
             icon: Icons.shopping_cart_outlined,
           ),
           SizedBox(width: SizeConfig.width * 0.01),
@@ -62,17 +63,21 @@ class UserHomeScreenHeader extends StatelessWidget {
             iconSize: SizeConfig.width * 0.06,
             hPadding: SizeConfig.width * 0.03,
             vPadding: SizeConfig.height * 0.03,
-            backgroundColor: AppColors.kPrimaryColor.withOpacity(0.5),
+            backgroundColor: AppColors.kPrimaryColor,
             child: Badge(
               backgroundColor: Colors.red,
               padding: EdgeInsets.all(SizeConfig.width * 0.00),
               label: Text("2"),
-              child: Icon(Icons.notifications_none_outlined,color: Colors.white,),
+              child: Icon(
+                Icons.notifications_none_outlined,
+                color: Colors.white,
+              ),
             ),
             onPressed: () {
-                            showToast('Coming soon');
-            }),
-          
+              showToast('Coming soon');
+            },
+          ),
+
           SizedBox(width: SizeConfig.width * 0.01),
         ],
       ),

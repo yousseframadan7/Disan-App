@@ -42,27 +42,22 @@ class ShopProductsScreenBody extends StatelessWidget {
                       shopName: shop.name,
                     ),
                     SizedBox(height: SizeConfig.height * 0.01),
-                    ShopInfo(
-                      description: shop.description ?? 'No description',
-                    ),
+                    ShopInfo(description: shop.description ?? 'No description'),
                     SizedBox(height: SizeConfig.height * 0.02),
-                    ActionButtons(
-                      shopModel: shop,
-                    ),
+                    ActionButtons(shopModel: shop),
                     SizedBox(height: SizeConfig.height * 0.02),
-                    LocationInfo(
-                      location: shop.address!,
-                    ),
+                    LocationInfo(location: shop.address!),
                     SizedBox(height: SizeConfig.height * 0.02),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.width * 0.04),
-                      child: ReviewsListView(),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //       horizontal: SizeConfig.width * 0.04),
+                    //   child: ReviewsListView(),
+                    // ),
                     SizedBox(height: SizeConfig.height * 0.02),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: SizeConfig.width * 0.04),
+                        horizontal: SizeConfig.width * 0.04,
+                      ),
                       child: Text(
                         "Our Products",
                         style: AppTextStyles.title20BlackW500,
@@ -73,12 +68,11 @@ class ShopProductsScreenBody extends StatelessWidget {
                       height: SizeConfig.height * 0.5,
                       child: shop.products.isEmpty
                           ? Center(
-                              child:
-                                  Lottie.asset(AppLotties.emptyRequestsLottie),
+                              child: Lottie.asset(
+                                AppLotties.emptyRequestsLottie,
+                              ),
                             )
-                          : OurProductsSection(
-                              products: shop.products,
-                            ),
+                          : OurProductsSection(products: shop.products),
                     ),
                     SizedBox(height: SizeConfig.height * 0.02),
                   ],
